@@ -4,7 +4,9 @@
   "description": "Inblox Token Swap SDK",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm-run-all --silent test-*",
+    "test-audit": "npm audit --audit-level=moderate",
+    "test-lint": "eslint ./src/**/*.js"
   },
   "author": "Inblox dev",
   "license": "ISC",
@@ -19,5 +21,13 @@
     "ethereumjs-tx": "^2.1.2",
     "node-fetch": "^2.6.0",
     "web3": "^1.2.7"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-filenames": "^1.3.2",
+    "eslint-plugin-import": "^2.22.0",
+    "npm-run-all": "^4.1.5"
   }
 }
