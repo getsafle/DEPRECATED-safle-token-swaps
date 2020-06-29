@@ -8,6 +8,9 @@ on:
     branches:
       - feature-*
       - bugfix-*
+    paths:
+      - package.json
+      - CHANGELOG
 
 jobs:
   build:
