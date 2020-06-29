@@ -11,15 +11,13 @@
   "author": "Inblox dev",
   "license": "ISC",
   "dependencies": {
-    "@inbloxme/inblox-handlename-package": "^1.0.4",
-    "@inbloxme/inblox-keyless-transactions": "^1.2.9",
     "@inbloxme/inbloxme-identity-wallet": "^1.0.0",
-    "@inbloxme/keyless-transactions": "^1.0.3",
+    "@inbloxme/keyless-transactions": "^1.0.4",
     "axios": "^0.19.2",
     "bn": "^1.0.5",
     "bn.js": "^5.1.1",
     "ethereumjs-tx": "^2.1.2",
-    "node-fetch": "^2.6.0",
+    "generate-changelog": "^1.8.0",
     "web3": "^1.2.7"
   },
   "devDependencies": {

@@ -1,13 +1,13 @@
+/* eslint-disable no-use-before-define */
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
-const fetch = require('node-fetch');
-const inbloxHandlename = require('@inbloxme/inbloxme-identity-wallet').InbloxHandlename;
+const { InbloxHandlename } = require('@inbloxme/inbloxme-identity-wallet');
 const inblox = require('@inbloxme/keyless-transactions');
 
 const HELPER = require('./utils/helper');
 const {
-  kyberProxyContractAddress, KYBER_CURRENCY_URL, KYBER_GET_GAS_LIMIT_URL, REF_ADDRESS, ETH_TOKEN_ADDRESS,
-} = require('../config');
+  kyberProxyContractAddress, KYBER_CURRENCY_URL, KYBER_GET_GAS_LIMIT_URL, REF_ADDRESS, ETH_TOKEN_ADDRESS, INFURA_KEY, ENV,
+} = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
 
@@ -26,25 +26,6 @@ async function getTokensList() {
   return { error: 'Error occured. Please try again.' };
 }
 
-// method to return data for selected token
-async function getTokenDetails(tokenSymbol) {
-  const { data } = await HELPER.getRequest({
-    url: KYBER_CURRENCY_URL,
-  });
-
-  if (data) {
-    const tokens = data.data;
-
-    tokens.forEach((element) => {
-      if (element.symbol == tokenSymbol) {
-        return { response: element };
-      }
-    });
-  }
-
-  return { error: 'Invalid token symbol. Please try again.' };
-}
-
 // method to get quantity of destination tokens
 async function getDstQty(srcQty, srcDecimals, dstDecimals, rate) {
   const PRECISION = (10 ** 18);
@@ -59,6 +40,9 @@ async function getDstQty(srcQty, srcDecimals, dstDecimals, rate) {
 // method to get quantity of source tokens
 function getSrcQty(dstQty, srcDecimals, dstDecimals, rate) {
   const PRECISION = (10 ** 18);
+
+  let numerator;
+  let denominator;
 
   if (srcDecimals >= dstDecimals) {
     numerator = (PRECISION * dstQty * (10 ** (srcDecimals - dstDecimals)));
@@ -96,76 +80,79 @@ class TokenSwap {
   }) {
     const srcQtyWei = (srcQty * 10 ** srcDecimal).toString();
     let pvtKey;
+    let userAdd = userAddress;
+    let txReceipt;
 
     if (privateKey) {
       pvtKey = Buffer.from(privateKey, 'hex');
-      userAddress = web3.eth.accounts.privateKeyToAccount(
+      userAdd = web3.eth.accounts.privateKeyToAccount(
         `0x${privateKey.toString('hex')}`,
       ).address;
     }
     const refAddress = REF_ADDRESS;
 
-    if (srcTokenAddress != ETH_TOKEN_ADDRESS) {
+    if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
       const results = await this.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);
       const srcTokenContract = new web3.eth.Contract(erc20Contract, srcTokenAddress);
       const contractAllowance = await srcTokenContract.methods
-        .allowance(userAddress, kyberProxyContractAddress)
+        .allowance(userAdd, kyberProxyContractAddress)
         .call();
 
       if (srcQtyWei <= contractAllowance) {
-        await this.trade(
+        txReceipt = await this.trade(
           srcTokenAddress,
           srcQtyWei,
           dstTokenAddress,
-          userAddress,
+          userAdd,
           maxAllowance,
           results.slippageRate,
           refAddress,
           srcQty,
-          userAddress,
+          userAdd,
           pvtKey,
           wallet,
           userName,
           inbloxPassword,
         );
-      } else {
-        await this.approveContract(maxAllowance, userAddress, srcTokenAddress, srcTokenContract, pvtKey, wallet);
-        await this.trade(srcTokenAddress,
-          srcQtyWei,
-          dstTokenAddress,
-          userAddress,
-          maxAllowance,
-          results.slippageRate,
-          refAddress,
-          srcQty,
-          userAddress,
-          pvtKey,
-          wallet,
-          userName,
-          inbloxPassword);
+
+        return txReceipt;
       }
-      // Quit the program
-      process.exit(0);
+      await this.approveContract(maxAllowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet);
+      txReceipt = await this.trade(srcTokenAddress,
+        srcQtyWei,
+        dstTokenAddress,
+        userAdd,
+        maxAllowance,
+        results.slippageRate,
+        refAddress,
+        srcQty,
+        userAdd,
+        pvtKey,
+        wallet,
+        userName,
+        inbloxPassword);
+
+      return txReceipt;
     }
     const results = await this.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);
 
-    await this.trade(
+    txReceipt = await this.trade(
       srcTokenAddress,
       srcQtyWei,
       dstTokenAddress,
-      userAddress,
+      userAdd,
       maxAllowance,
       results.slippageRate,
       refAddress,
       srcQty,
-      userAddress,
+      userAdd,
       pvtKey,
       wallet,
       userName,
       inbloxPassword,
     );
-    // Quit the program
-    process.exit(0);
+
+    return txReceipt;
   }
 
   async trade(
@@ -177,12 +164,13 @@ class TokenSwap {
     minConversionRate,
     walletId,
     srcQty,
-    userAddress,
+    userAdd,
     pvtKey,
     wallet,
     userName,
     inbloxPassword,
   ) {
+    let txReceipt;
     const txData = await this.kyberNetworkContract.methods
       .trade(
         srcTokenAddress,
@@ -196,38 +184,42 @@ class TokenSwap {
       .encodeABI();
     const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
 
-    if (srcTokenAddress != ETH_TOKEN_ADDRESS) {
-      await this.broadcastTx(
-        userAddress,
+    if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
+      txReceipt = await this.broadcastTx(
+        userAdd,
         kyberProxyContractAddress,
         txData,
         0,
         gasLimit,
-        userAddress,
+        userAdd,
         pvtKey,
         wallet,
         userName,
         inbloxPassword,
       );
-    } else {
-      await this.broadcastTx(
-        userAddress,
-        kyberProxyContractAddress,
-        txData,
-        srcQtyWei,
-        gasLimit,
-        userAddress,
-        pvtKey,
-        wallet,
-        userName,
-        inbloxPassword,
-      );
+
+      return txReceipt;
     }
+
+    txReceipt = await this.broadcastTx(
+      userAdd,
+      kyberProxyContractAddress,
+      txData,
+      srcQtyWei,
+      gasLimit,
+      userAdd,
+      pvtKey,
+      wallet,
+      userName,
+      inbloxPassword,
+    );
+
+    return txReceipt;
   }
 
   // Function to broadcast transactions
-  async broadcastTx(from, to, txData, value, gasLimit, userAddress, pvtKey, wallet, userName, inbloxPassword) {
-    const txCount = await web3.eth.getTransactionCount(userAddress);
+  async broadcastTx(from, to, txData, value, gasLimit, userAdd, pvtKey, wallet, userName, inbloxPassword) {
+    const txCount = await web3.eth.getTransactionCount(userAdd);
     let gasPrice = web3.eth.getGasPrice();
     const maxGasPrice = await this.kyberNetworkContract.methods
       .maxGasPrice()
@@ -248,7 +240,7 @@ class TokenSwap {
       wallet, pvtKey, rawTx, userName, inbloxPassword,
     });
 
-    console.log(txReceipt);
+    return txReceipt;
   }
 
   // Function to get expected and slippage rates
@@ -261,18 +253,18 @@ class TokenSwap {
   }
 
   // Function to approve KNP contract
-  async approveContract(allowance, userAddress, srcTokenAddress, srcTokenContract, pvtKey, wallet, userName, inbloxPassword) {
+  async approveContract(allowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet, userName, inbloxPassword) {
     const txData = await srcTokenContract.methods
       .approve(kyberProxyContractAddress, allowance)
       .encodeABI();
 
     await this.broadcastTx(
-      userAddress,
+      userAdd,
       srcTokenAddress,
       txData,
-      0, // Ether value to be sent should be zero
-      '200000', // gasLimit
-      userAddress,
+      0,
+      '200000',
+      userAdd,
       pvtKey,
       wallet,
       userName,
@@ -282,7 +274,7 @@ class TokenSwap {
 
   // method to return wallet ether balance
   async getWalletBalance(walletAddress) {
-    const balance = await web3.eth.getBalance(walletAddress);
+    const balance = await this.web3.eth.getBalance(walletAddress);
 
     return balance;
   }
@@ -295,35 +287,31 @@ async function signAndSendTransaction({
     case 'handlename': {
       return signViaInblox(rawTx, userName, inbloxPassword);
     }
-      break;
     case 'keyStore': {
       return signViaPrivateKey(pvtKey, rawTx);
     }
-      break;
     case 'privateKey': {
       return signViaPrivateKey(pvtKey, rawTx);
     }
-      break;
-    case 'metamask':
-      {
-        return signViaMetamask(rawTx);
-      }
-      break;
+    default: {
+      return signViaMetamask(rawTx);
+    }
   }
 }
 
 async function signViaInblox(rawTx, userName, password) {
-  const keyless = new inblox.Keyless({ infuraKey: '5771ac7556054b998e809aeadb16a31c' });
+  const keyless = new inblox.Keyless({ infuraKey: INFURA_KEY, env: ENV });
+  const { error } = await keyless.getUser({ userName, password });
 
-  const getUser = await keyless.getUser({ userName, password });
+  if (error) {
+    return error;
+  }
 
-  const { to } = rawTx;
-  const { data } = rawTx;
-  const { value } = rawTx;
-  const { gasPrice } = rawTx;
-  const { gasLimit } = rawTx;
-  const { nonce } = rawTx;
-  const signAndSendTx = keyless.signAndSendTx({
+  const {
+    to, data, value, gasPrice, gasLimit, nonce,
+  } = rawTx;
+
+  const signAndSendTx = await keyless.signAndSendTx({
     to, value, gasPrice, gasLimit, data, nonce, password,
   });
 
@@ -336,12 +324,13 @@ async function signViaPrivateKey(pvtKey, rawTx) {
   tx.sign(pvtKey);
   const stringTx = `0x${tx.serialize().toString('hex')}`;
   const txReceipt = await web3.eth.sendSignedTransaction(stringTx)
-    .catch((error) => console.log(error));
+    .catch((error) => error);
 
   return txReceipt;
 }
 
 async function signViaMetamask(rawTx) {
+  // eslint-disable-next-line no-undef
   ethereum.sendAsync(
     {
       method: 'eth_sendTransaction',
@@ -353,8 +342,11 @@ async function signViaMetamask(rawTx) {
       } ],
     },
     (err, result) => {
-      if (err) console.error(err);
-      else console.log(result);
+      if (err) {
+        return (err);
+      }
+
+      return (result);
     },
   );
 }
@@ -366,26 +358,22 @@ async function getWallet({
     case 'handlename': {
       return getWalletFromHandlename(infuraKey, userHandlename);
     }
-      break;
     case 'keyStore': {
       return getWalletFromKeyStoreFile(keystoreJson, passphrase);
     }
-      break;
     case 'privateKey': {
       return getWalletFromPrivateKey(infuraKey, privateKey);
     }
-      break;
-    case 'metamask':
-      {
-        return getWalletFromMetamask();
-      }
-      break;
+    default:
+    {
+      return getWalletFromMetamask();
+    }
   }
 }
 
 // method to get user wallet from handlename
 async function getWalletFromHandlename(infuraKey, userHandlename) {
-  const handlename = new inbloxHandlename({ infuraKey });
+  const handlename = new InbloxHandlename({ infuraKey });
   const userAddress = await handlename.resolveAddressFromHandleName(userHandlename);
 
   return {
@@ -395,14 +383,15 @@ async function getWalletFromHandlename(infuraKey, userHandlename) {
 
 // method to get waller from keystore file
 async function getWalletFromKeyStoreFile(keystoreJson, passphrase) {
-  const wallet = await inblox.importFromEncryptedJson(keystoreJson, passphrase);
+  const Wallet = new inblox.Wallet();
+  const wallet = await Wallet.importFromEncryptedJson(keystoreJson, passphrase);
 
   return wallet.response;
 }
 
 // method to get user wallet from private key
 async function getWalletFromPrivateKey(infuraKey, privateKey) {
-  const web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/v3/${infuraKey}`));
+  web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/v3/${infuraKey}`));
   const wallet = await web3.eth.accounts.privateKeyToAccount(privateKey);
 
   return {
@@ -411,10 +400,9 @@ async function getWalletFromPrivateKey(infuraKey, privateKey) {
 }
 // method to get wallet from metamask
 async function getWalletFromMetamask() {
-  if (typeof window.ethereum !== 'undefined') {
-    console.log('MetaMask is installed!');
-  }
+  // eslint-disable-next-line no-undef
   if (window.ethereum) {
+    // eslint-disable-next-line no-undef
     const { ethereum } = window;
     const accounts = await ethereum.enable();
     const account = accounts[0];
@@ -425,7 +413,6 @@ async function getWalletFromMetamask() {
   return 'metamask not detected';
 }
 module.exports = {
-  getTokenDetails,
   getTokensList,
   getDstQty,
   getSrcQty,

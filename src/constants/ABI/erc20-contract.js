@@ -158,6 +158,6 @@ const erc20Contract = [
     type: 'event',
   } ];
 
-export default {
+module.exports = {
   erc20Contract,
 };
