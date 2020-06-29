@@ -1,6 +1,6 @@
 {
-  "name": "inblox-token-swap",
-  "version": "1.0.1",
+  "name": "@inbloxme/inblox-token-swaps",
+  "version": "1.0.0",
   "description": "Inblox Token Swap SDK",
   "main": "src/index.js",
   "scripts": {
