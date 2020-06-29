@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm-run-all --silent test-*",
     "test-audit": "npm audit --audit-level=moderate",
-    "test-lint": "eslint ./src/**/*.js"
+    "test-lint": "eslint src/**/*.js"
   },
   "author": "Inblox dev",
   "license": "ISC",
