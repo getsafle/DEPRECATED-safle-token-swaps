@@ -11,6 +11,13 @@ on:
     paths:
       - package.json
       - CHANGELOG
+  pull_request:
+    branches:
+      - feature-*
+      - bugfix-*
+    paths:
+      - package.json
+      - CHANGELOG
 
 jobs:
   build:
