@@ -412,12 +412,11 @@ async function getWalletFromMetamask() {
 
   return 'metamask not detected';
 }
-module.exports = {
-  getTokensList,
-  getDstQty,
-  getSrcQty,
-  getGasLimit,
-  getWallet,
-  signAndSendTransaction,
-  TokenSwap,
-};
+
+module.exports.getTokensList = getTokensList;
+module.exports.getDstQty = getDstQty;
+module.exports.getSrcQty = getSrcQty;
+module.exports.getGasLimit = getGasLimit;
+module.exports.getWallet = getWallet;
+module.exports.signAndSendTransaction = signAndSendTransaction;
+module.exports.TokenSwap = TokenSwap;
