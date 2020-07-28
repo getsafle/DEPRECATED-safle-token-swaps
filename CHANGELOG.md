@@ -10,3 +10,9 @@
 ##### Features updated
 
 * Updated class and method export
+
+### 1.0.2 (2020-07-28)
+
+##### Features updated
+
+* Fixed value of max allowance.
