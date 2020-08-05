@@ -310,7 +310,9 @@ class TokenSwap {
 
   // method to return wallet ether balance
   async getWalletBalance(walletAddress) {
-    const balance = await this.web3.eth.getBalance(walletAddress);
+    let balance = await web3.eth.getBalance(walletAddress);
+
+    balance = web3.utils.fromWei(balance, 'ether');
 
     return balance;
   }
