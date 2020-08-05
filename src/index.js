@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
-const { InbloxHandlename } = require('@inbloxme/inbloxme-identity-wallet');
 const inblox = require('@inbloxme/keyless-transactions');
 
 const HELPER = require('./utils/helper');
@@ -417,12 +416,9 @@ async function signViaMetamask(rawTx) {
 }
 
 async function getWallet({
-  wallet, infuraKey, userHandlename, keystoreJson, passphrase, privateKey,
+  wallet, infuraKey, keystoreJson, passphrase, privateKey,
 }) {
   switch (wallet) {
-    case 'handlename': {
-      return getWalletFromHandlename(infuraKey, userHandlename);
-    }
     case 'keyStore': {
       return getWalletFromKeyStoreFile(keystoreJson, passphrase);
     }
@@ -434,16 +430,6 @@ async function getWallet({
       return getWalletFromMetamask();
     }
   }
-}
-
-// method to get user wallet from handlename
-async function getWalletFromHandlename(infuraKey, userHandlename) {
-  const handlename = new InbloxHandlename({ infuraKey });
-  const userAddress = await handlename.resolveAddressFromHandleName(userHandlename);
-
-  return {
-    userAddress,
-  };
 }
 
 // method to get waller from keystore file
