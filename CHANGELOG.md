@@ -40,3 +40,9 @@
 ##### Features updated
 
 * Added method to calcualte slippage percentage
+
+### 1.0.7 (2020-08-05)
+
+##### Features updated
+
+* Added method to get exchange rate
