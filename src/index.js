@@ -6,7 +6,15 @@ const inblox = require('@inbloxme/keyless-transactions');
 
 const HELPER = require('./utils/helper');
 const {
-  kyberProxyContractAddress, KYBER_CURRENCY_URL, KYBER_GET_GAS_LIMIT_URL, REF_ADDRESS, ETH_TOKEN_ADDRESS, INFURA_KEY, ENV, MAX_ALLOWANCE,
+  kyberProxyContractAddress,
+  KYBER_CURRENCY_URL,
+  KYBER_GET_GAS_LIMIT_URL,
+  REF_ADDRESS, ETH_TOKEN_ADDRESS,
+  INFURA_KEY,
+  ENV,
+  MAX_ALLOWANCE,
+  ETHERSCAN_ROPSTEN_SERVICE_URL,
+  ETHERSCAN_SECRET,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
@@ -297,6 +305,41 @@ class TokenSwap {
     const balance = await this.web3.eth.getBalance(walletAddress);
 
     return balance;
+  }
+
+  // Method to fetch user token balance
+  // eslint-disable-next-line class-methods-use-this
+  async getTokenBalance(srcTokenAddress, userAddress) {
+    if (srcTokenAddress === ETH_TOKEN_ADDRESS) {
+      let balance = await web3.eth.getBalance(userAddress);
+
+      balance = web3.utils.fromWei(balance, 'ether');
+
+      return { srcTokenAddress, balance };
+    }
+
+    const url = `${ETHERSCAN_ROPSTEN_SERVICE_URL}`;
+
+    const { error, data } = await HELPER.getRequest({
+      url,
+      params: {
+        module: 'account',
+        action: 'tokenbalance',
+        contractaddress: `${srcTokenAddress}`,
+        address: `${userAddress}`,
+        tag: 'latest',
+        apiKey: `${ETHERSCAN_SECRET}`,
+      },
+    });
+
+    if (error) {
+      return { error };
+    }
+
+    const { result } = data;
+    const balance = web3.utils.fromWei(result, 'ether');
+
+    return { srcTokenAddress, balance };
   }
 }
 
