@@ -90,6 +90,26 @@ class TokenSwap {
       ).address;
     }
     const refAddress = REF_ADDRESS;
+    const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
+    const gasPrice = await web3.eth.getGasPrice();
+    let gas = gasLimit * gasPrice;
+
+    gas = gas.toString();
+    const gasQtyEth = await web3.utils.fromWei(gas, 'ether');
+
+    const { balance } = await this.getTokenBalance(srcTokenAddress, userAdd);
+
+    if (srcTokenAddress === ETH_TOKEN_ADDRESS) {
+      if ((srcQty + gasQtyEth) > balance) {
+        return 'Insufficient Funds';
+      }
+    } else {
+      const userEthBalance = await this.getTokenBalance(ETH_TOKEN_ADDRESS, userAdd);
+
+      if ((userEthBalance < gasQtyEth) || (balance < srcQty)) {
+        return 'Insufficient Funds';
+      }
+    }
 
     if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
       const results = await this.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);
