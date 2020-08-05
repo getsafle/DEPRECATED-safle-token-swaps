@@ -17,7 +17,7 @@
 
 * Fixed value of max allowance.
 
-### 1.0.3 (2020-07-28)
+### 1.0.3 (2020-08-05)
 
 ##### Features updated
 
