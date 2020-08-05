@@ -28,3 +28,9 @@
 ##### Features updated
 
 * Added method to get token balance
+
+### 1.0.5 (2020-08-05)
+
+##### Features updated
+
+* Added method to convert eth to wei
