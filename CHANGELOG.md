@@ -16,3 +16,9 @@
 ##### Features updated
 
 * Fixed value of max allowance.
+
+### 1.0.3 (2020-07-28)
+
+##### Features updated
+
+* Implemented a check for insufficient funds in user's wallet
