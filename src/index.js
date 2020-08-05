@@ -10,9 +10,8 @@ const {
   kyberProxyContractAddress,
   KYBER_CURRENCY_URL,
   KYBER_GET_GAS_LIMIT_URL,
-  REF_ADDRESS, ETH_TOKEN_ADDRESS,
-  INFURA_KEY,
-  ENV,
+  REF_ADDRESS,
+  ETH_TOKEN_ADDRESS,
   MAX_ALLOWANCE,
   ETHERSCAN_ROPSTEN_SERVICE_URL,
   ETHERSCAN_SECRET,
@@ -85,7 +84,7 @@ class TokenSwap {
   }
 
   async swapTokens({
-    srcTokenAddress, dstTokenAddress, srcDecimal, srcQty, privateKey, wallet, userAddress, userName, inbloxPassword,
+    srcTokenAddress, dstTokenAddress, srcDecimal, srcQty, privateKey, wallet, userAddress,
   }) {
     const srcQtyWei = (srcQty * 10 ** srcDecimal).toString();
     let pvtKey;
@@ -140,8 +139,6 @@ class TokenSwap {
           userAdd,
           pvtKey,
           wallet,
-          userName,
-          inbloxPassword,
         );
 
         return txReceipt;
@@ -157,9 +154,7 @@ class TokenSwap {
         srcQty,
         userAdd,
         pvtKey,
-        wallet,
-        userName,
-        inbloxPassword);
+        wallet);
 
       return txReceipt;
     }
@@ -177,8 +172,6 @@ class TokenSwap {
       userAdd,
       pvtKey,
       wallet,
-      userName,
-      inbloxPassword,
     );
 
     return txReceipt;
@@ -196,8 +189,6 @@ class TokenSwap {
     userAdd,
     pvtKey,
     wallet,
-    userName,
-    inbloxPassword,
   ) {
     let txReceipt;
     const txData = await this.kyberNetworkContract.methods
@@ -223,8 +214,6 @@ class TokenSwap {
         userAdd,
         pvtKey,
         wallet,
-        userName,
-        inbloxPassword,
       );
 
       return txReceipt;
@@ -239,15 +228,13 @@ class TokenSwap {
       userAdd,
       pvtKey,
       wallet,
-      userName,
-      inbloxPassword,
     );
 
     return txReceipt;
   }
 
   // Function to broadcast transactions
-  async broadcastTx(from, to, txData, value, gasLimit, userAdd, pvtKey, wallet, userName, inbloxPassword) {
+  async broadcastTx(from, to, txData, value, gasLimit, userAdd, pvtKey, wallet) {
     const txCount = await web3.eth.getTransactionCount(userAdd);
     let gasPrice = web3.eth.getGasPrice();
     const maxGasPrice = await this.kyberNetworkContract.methods
@@ -266,7 +253,7 @@ class TokenSwap {
     };
 
     const txReceipt = await signAndSendTransaction({
-      wallet, pvtKey, rawTx, userName, inbloxPassword,
+      wallet, pvtKey, rawTx,
     });
 
     return txReceipt;
@@ -289,7 +276,7 @@ class TokenSwap {
   }
 
   // Function to approve KNP contract
-  async approveContract(allowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet, userName, inbloxPassword) {
+  async approveContract(allowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet) {
     const txData = await srcTokenContract.methods
       .approve(kyberProxyContractAddress, allowance)
       .encodeABI();
@@ -303,8 +290,6 @@ class TokenSwap {
       userAdd,
       pvtKey,
       wallet,
-      userName,
-      inbloxPassword,
     );
   }
 
@@ -362,6 +347,14 @@ class TokenSwap {
     return { srcTokenAddress, balance };
   }
 
+  // Method to sign transaction via inblox keyless
+  async signViaInblox(signedTx) {
+    const txReceipt = await web3.eth.sendSignedTransaction(signedTx)
+      .catch((error) => error);
+
+    return txReceipt;
+  }
+
   async getExchangeRates(srcTokenAddress, dstTokenAddress, srcDecimal, dstDecimal) {
     const quantity = await this.convertEthToWei('1');
     const result = await this.getRates(srcTokenAddress, dstTokenAddress, quantity);
@@ -372,11 +365,11 @@ class TokenSwap {
 }
 
 async function signAndSendTransaction({
-  wallet, pvtKey, rawTx, userName, inbloxPassword,
+  wallet, pvtKey, rawTx,
 }) {
   switch (wallet) {
     case 'handlename': {
-      return signViaInblox(rawTx, userName, inbloxPassword);
+      return rawTx;
     }
     case 'keyStore': {
       return signViaPrivateKey(pvtKey, rawTx);
@@ -388,25 +381,6 @@ async function signAndSendTransaction({
       return signViaMetamask(rawTx);
     }
   }
-}
-
-async function signViaInblox(rawTx, userName, password) {
-  const keyless = new inblox.Keyless({ infuraKey: INFURA_KEY, env: ENV });
-  const { error } = await keyless.getUser({ userName, password });
-
-  if (error) {
-    return error;
-  }
-
-  const {
-    to, data, value, gasPrice, gasLimit, nonce,
-  } = rawTx;
-
-  const signAndSendTx = await keyless.signAndSendTx({
-    to, value, gasPrice, gasLimit, data, nonce, password,
-  });
-
-  return signAndSendTx;
 }
 
 async function signViaPrivateKey(pvtKey, rawTx) {
