@@ -22,3 +22,9 @@
 ##### Features updated
 
 * Implemented a check for insufficient funds in user's wallet
+
+### 1.0.4 (2020-08-05)
+
+##### Features updated
+
+* Added method to get token balance
