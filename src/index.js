@@ -359,6 +359,14 @@ class TokenSwap {
 
     return { srcTokenAddress, balance };
   }
+
+  async getExchangeRates(srcTokenAddress, dstTokenAddress, srcDecimal, dstDecimal) {
+    const quantity = await this.convertEthToWei('1');
+    const result = await this.getRates(srcTokenAddress, dstTokenAddress, quantity);
+    const rate = await getDstQty('1', srcDecimal, dstDecimal, result.expectedRate);
+
+    return rate;
+  }
 }
 
 async function signAndSendTransaction({
