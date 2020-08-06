@@ -46,3 +46,9 @@
 ##### Features updated
 
 * Added method to get exchange rate
+
+### 1.0.8 (2020-08-05)
+
+##### Features updated
+
+* Updated get wallet balance to return ethereum balance in wei
