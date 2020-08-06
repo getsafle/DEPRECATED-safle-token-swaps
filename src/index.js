@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
@@ -278,6 +279,13 @@ class TokenSwap {
       .call();
 
     return rate;
+  }
+
+  // Function to convert eth to wei
+  async convertEthToWei(srcQty) {
+    const srcQtyWei = await web3.utils.toWei(srcQty, 'ether');
+
+    return srcQtyWei;
   }
 
   // Function to approve KNP contract
