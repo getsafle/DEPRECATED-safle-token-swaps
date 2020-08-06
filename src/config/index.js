@@ -6,4 +6,5 @@ module.exports = {
   ETH_TOKEN_ADDRESS: process.env.ETH_TOKEN_ADDRESS || '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   INFURA_KEY: process.env.INFURA_KEY || '5771ac7556054b998e809aeadb16a31c',
   ENV: process.env.ENV || 'dev',
+  MAX_ALLOWANCE: process.env.MAX_ALLOWANCE || "115792089237316195423570985008687907853269984665640564039457584007913129639935",
 };

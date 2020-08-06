@@ -6,7 +6,7 @@ const inblox = require('@inbloxme/keyless-transactions');
 
 const HELPER = require('./utils/helper');
 const {
-  kyberProxyContractAddress, KYBER_CURRENCY_URL, KYBER_GET_GAS_LIMIT_URL, REF_ADDRESS, ETH_TOKEN_ADDRESS, INFURA_KEY, ENV,
+  kyberProxyContractAddress, KYBER_CURRENCY_URL, KYBER_GET_GAS_LIMIT_URL, REF_ADDRESS, ETH_TOKEN_ADDRESS, INFURA_KEY, ENV, MAX_ALLOWANCE,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
@@ -76,7 +76,7 @@ class TokenSwap {
   }
 
   async swapTokens({
-    srcTokenAddress, dstTokenAddress, srcDecimal, srcQty, maxAllowance, privateKey, wallet, userAddress, userName, inbloxPassword,
+    srcTokenAddress, dstTokenAddress, srcDecimal, srcQty, privateKey, wallet, userAddress, userName, inbloxPassword,
   }) {
     const srcQtyWei = (srcQty * 10 ** srcDecimal).toString();
     let pvtKey;
@@ -104,7 +104,7 @@ class TokenSwap {
           srcQtyWei,
           dstTokenAddress,
           userAdd,
-          maxAllowance,
+          MAX_ALLOWANCE,
           results.slippageRate,
           refAddress,
           srcQty,
@@ -117,12 +117,12 @@ class TokenSwap {
 
         return txReceipt;
       }
-      await this.approveContract(maxAllowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet);
+      await this.approveContract(MAX_ALLOWANCE, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet);
       txReceipt = await this.trade(srcTokenAddress,
         srcQtyWei,
         dstTokenAddress,
         userAdd,
-        maxAllowance,
+        MAX_ALLOWANCE,
         results.slippageRate,
         refAddress,
         srcQty,
@@ -141,7 +141,7 @@ class TokenSwap {
       srcQtyWei,
       dstTokenAddress,
       userAdd,
-      maxAllowance,
+      MAX_ALLOWANCE,
       results.slippageRate,
       refAddress,
       srcQty,
