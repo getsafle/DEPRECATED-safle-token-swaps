@@ -58,3 +58,9 @@
 ##### Features updated
 
 * Updated method to sign via inblox
+
+### 1.0.9 (2020-08-05)
+
+##### Features updated
+
+* Removed method to get inblox wallet
