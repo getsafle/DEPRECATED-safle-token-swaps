@@ -52,3 +52,9 @@
 ##### Features updated
 
 * Updated get wallet balance to return ethereum balance in wei
+
+### 1.0.9 (2020-08-05)
+
+##### Features updated
+
+* Updated method to sign via inblox
