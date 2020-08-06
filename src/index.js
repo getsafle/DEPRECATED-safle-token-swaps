@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
-const inblox = require('@inbloxme/keyless-transactions');
+const ethers = require('ethers');
 
 const HELPER = require('./utils/helper');
 const {
@@ -434,10 +434,15 @@ async function getWallet({
 
 // method to get waller from keystore file
 async function getWalletFromKeyStoreFile(keystoreJson, passphrase) {
-  const Wallet = new inblox.Wallet();
-  const wallet = await Wallet.importFromEncryptedJson(keystoreJson, passphrase);
+  const json = JSON.stringify(keystoreJson);
 
-  return wallet.response;
+  try {
+    const wallet = await ethers.Wallet.fromEncryptedJson(json, passphrase);
+
+    return wallet;
+  } catch (error) {
+    return { error: 'WRONG PASSWORD' };
+  }
 }
 
 // method to get user wallet from private key
