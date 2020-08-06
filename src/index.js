@@ -315,8 +315,18 @@ class TokenSwap {
     return balance;
   }
 
+  // Function to get slippage percentage
+  async getSlippage(srcTokenAddress, dstTokenAddress, srcQty) {
+    const quantity1 = await this.convertEthToWei('1');
+    const quantity2 = await this.convertEthToWei(srcQty);
+    const result1 = await this.getRates(srcTokenAddress, dstTokenAddress, quantity1);
+    const result2 = await this.getRates(srcTokenAddress, dstTokenAddress, quantity2);
+    const slippage = ((result1.expectedRate - result2.expectedRate) * 100) / (result1.expectedRate);
+
+    return slippage;
+  }
+
   // Method to fetch user token balance
-  // eslint-disable-next-line class-methods-use-this
   async getTokenBalance(srcTokenAddress, userAddress) {
     if (srcTokenAddress === ETH_TOKEN_ADDRESS) {
       let balance = await web3.eth.getBalance(userAddress);

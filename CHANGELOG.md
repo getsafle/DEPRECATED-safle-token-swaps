@@ -34,3 +34,9 @@
 ##### Features updated
 
 * Added method to convert eth to wei
+
+### 1.0.6 (2020-08-05)
+
+##### Features updated
+
+* Added method to calcualte slippage percentage
