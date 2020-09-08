@@ -18,6 +18,9 @@ const {
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
 
+	
+const { Widget } = require('./widget');
+
 let web3;
 
 // Method to return list of supported tokens
@@ -476,3 +479,5 @@ module.exports.getGasLimit = getGasLimit;
 module.exports.getWallet = getWallet;
 module.exports.signAndSendTransaction = signAndSendTransaction;
 module.exports.TokenSwap = TokenSwap;
+module.exports.Widget = Widget;
+
