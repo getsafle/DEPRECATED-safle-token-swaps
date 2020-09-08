@@ -81,4 +81,4 @@
 
 ##### Features updated
 
-* Punctuation updated
+* Punctuation updated.
