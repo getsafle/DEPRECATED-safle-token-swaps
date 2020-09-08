@@ -77,7 +77,7 @@
 
 * Token Swap widget added
 
-### 1.0.13 (2020-09-09)
+### 1.0.13, 1.0.14 (2020-09-09)
 
 ##### Features updated
 
