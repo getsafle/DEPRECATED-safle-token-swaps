@@ -405,8 +405,7 @@ async function signViaMetamask(rawTx) {
       }
 
       return (result);
-    },
-  );
+    });
 }
 
 async function getWallet({
