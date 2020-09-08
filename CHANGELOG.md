@@ -70,3 +70,9 @@
 ##### Features updated
 
 * Updated method to get wallet using keystore sjson and passphrase
+
+### 1.0.12 (2020-09-09)
+
+##### Features updated
+
+* Token Swap widget added
