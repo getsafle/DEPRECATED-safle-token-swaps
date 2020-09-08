@@ -76,3 +76,9 @@
 ##### Features updated
 
 * Token Swap widget added
+
+### 1.0.13 (2020-09-09)
+
+##### Features updated
+
+* Punctuation updated
