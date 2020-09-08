@@ -95,9 +95,7 @@ class TokenSwap {
 
     if (privateKey) {
       pvtKey = Buffer.from(privateKey, 'hex');
-      userAdd = web3.eth.accounts.privateKeyToAccount(
-        `0x${privateKey.toString('hex')}`,
-      ).address;
+      userAdd = web3.eth.accounts.privateKeyToAccount(`0x${privateKey.toString('hex')}`).address;
     }
     const refAddress = REF_ADDRESS;
     const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
@@ -140,8 +138,7 @@ class TokenSwap {
           srcQty,
           userAdd,
           pvtKey,
-          wallet,
-        );
+          wallet);
 
         return txReceipt;
       }
@@ -173,8 +170,7 @@ class TokenSwap {
       srcQty,
       userAdd,
       pvtKey,
-      wallet,
-    );
+      wallet);
 
     return txReceipt;
   }
@@ -190,8 +186,7 @@ class TokenSwap {
     srcQty,
     userAdd,
     pvtKey,
-    wallet,
-  ) {
+    wallet) {
     let txReceipt;
     const txData = await this.kyberNetworkContract.methods
       .trade(
@@ -201,8 +196,7 @@ class TokenSwap {
         dstAddress,
         maxDstAmount,
         minConversionRate,
-        walletId,
-      )
+        walletId )
       .encodeABI();
     const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
 
@@ -215,8 +209,7 @@ class TokenSwap {
         gasLimit,
         userAdd,
         pvtKey,
-        wallet,
-      );
+        wallet);
 
       return txReceipt;
     }
@@ -229,8 +222,7 @@ class TokenSwap {
       gasLimit,
       userAdd,
       pvtKey,
-      wallet,
-    );
+      wallet);
 
     return txReceipt;
   }
@@ -291,8 +283,7 @@ class TokenSwap {
       '200000',
       userAdd,
       pvtKey,
-      wallet,
-    );
+      wallet);
   }
 
   // method to return wallet ether balance
