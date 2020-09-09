@@ -1,6 +1,6 @@
 {
   "name": "@inbloxme/inblox-token-swaps",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Inblox Token Swap SDK",
   "main": "src/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "Inblox dev",
   "license": "ISC",
   "dependencies": {
-    "@inbloxme/keyless-transactions": "^1.1.4",
+    "@inbloxme/keyless-transactions": "^1.1.5",
     "axios": "^0.19.2",
     "bn": "^1.0.5",
     "bn.js": "^5.1.1",
