@@ -84,8 +84,9 @@
 * Punctuation updated.
 
 
-### 1.0.15 (2020-09-09)
+### 1.0.15, 1.0.16 (2020-09-09)
 
 ##### Features updated
 
 * Keyless package version updated.
+
