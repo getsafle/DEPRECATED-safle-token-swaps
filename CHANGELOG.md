@@ -90,3 +90,14 @@
 
 * Keyless package version updated.
 
+
+### 1.0.17 (2020-19-09)
+
+##### Features updated
+
+* Token selector dropdown width updated.
+* Wallet selection mechanism updated
+* Removed setUserToken and getUserToken methods
+
+
+

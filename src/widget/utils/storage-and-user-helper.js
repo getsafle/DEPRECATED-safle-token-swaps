@@ -1,13 +1,5 @@
 // Storage & user helper utils.
 
-export function setUserToken(token) {
-  localStorage.setItem('token', token);
-}
-
-export function getUserToken() {
-  return localStorage.getItem('token');
-}
-
 export function setUserPublicAddress(address) {
   localStorage.setItem('address', address);
 }
@@ -25,5 +17,5 @@ export function getSwapVia() {
 }
 
 export function whetherUserLoggedIn() {
-  return getUserToken() ? true : false;
+  return getUserPublicAddress() ? true : false;
 }
