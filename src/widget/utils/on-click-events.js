@@ -49,6 +49,7 @@ function initialiseKeylessWidget(widgetInstance) {
       if (widgetData.status) {
         widgetInstance.handleName = widgetData.data.handleName;
         widgetInstance.userAddress = widgetData.data.publicAddress;
+        widgetInstance.userLoggedIn = true;
         setUserPublicAddress(widgetData.data.publicAddress);
         setSwapVia('handlename');
       }
@@ -59,8 +60,12 @@ function initialiseKeylessWidget(widgetInstance) {
   widgetInstance.keylessWidget.on(
     widgetInstance.keylessWidget.EVENTS.KEYLESS_WIDGET_CLOSED,
     (widgetCloseData) => {
-      if (widgetCloseData.status && widgetCloseData.initMethod == 'login') {
-        setActiveTab(widgetInstance, 'swap-modal');
+      if (widgetCloseData.status) {
+        if (widgetCloseData.initMethod == 'login') {
+          setActiveTab(widgetInstance, 'swap-modal');
+        } else if (widgetCloseData.initMethod == 'sign-and-send-transaction') {
+          setActiveTab(widgetInstance, 'success-modal');
+        }
       }
     }
   );
@@ -296,6 +301,7 @@ export function initOnClickEvents(widgetInstance) {
         const metaMaskResponse = await connectWithMetaMask(widgetInstance);
 
         if (metaMaskResponse.status) {
+          widgetInstance.userLoggedIn = true;
           setActiveTab(widgetInstance, 'swap-modal');
         }
         hideLoader();
@@ -324,6 +330,7 @@ export function initOnClickEvents(widgetInstance) {
         const privateKeyResponse = await connectWithPrivateKey(widgetInstance);
 
         if (privateKeyResponse.status) {
+          widgetInstance.userLoggedIn = true;
           setActiveTab(widgetInstance, 'swap-modal');
         }
         hideLoader();
@@ -376,6 +383,7 @@ export function initOnClickEvents(widgetInstance) {
         const passPhraseResponse = await connectWithKeyStore(widgetInstance);
 
         if (passPhraseResponse.status) {
+          widgetInstance.userLoggedIn = true;
           setActiveTab(widgetInstance, 'swap-modal');
         }
         hideLoader();

@@ -1,6 +1,4 @@
 import {
-  setUserToken,
-  getUserToken,
   whetherUserLoggedIn,
   setUserPublicAddress,
   getUserPublicAddress
@@ -18,8 +16,6 @@ import {
 export { default as EVENTS } from './events';
 
 export {
-  getUserToken,
-  setUserToken,
   whetherUserLoggedIn,
   generateModal,
   showLoader,

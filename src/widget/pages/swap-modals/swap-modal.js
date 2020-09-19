@@ -321,6 +321,9 @@ const updateSourceAndDestinationImage = () => {
 
 export const changeWallet = (widgetInstance) => {
   widgetInstance.swapVia = '';
+  widgetInstance.userAddress = '';
+  widgetInstance.userLoggedIn = false;
+
   if (localStorage.getItem('address')) {
     localStorage.removeItem('address');
   }

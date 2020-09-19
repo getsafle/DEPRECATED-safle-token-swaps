@@ -198,7 +198,6 @@ export function WidgetCSS() {
     color: #2e2e2f;
     border: none;
     background-color: transparent;
-    width: 60px;
   }
   .custom-input select:focus {
     outline: none !important;
@@ -632,5 +631,5 @@ export function WidgetCSS() {
     }
    
   }`;
-  
+
 }
