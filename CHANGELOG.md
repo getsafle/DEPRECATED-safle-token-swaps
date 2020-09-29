@@ -99,5 +99,14 @@
 * Wallet selection mechanism updated
 * Removed setUserToken and getUserToken methods
 
+### 1.0.18 (2020-19-09)
+
+##### Features updated
+
+* getRequest method in helper updated to accept parameters.
+
+
+
+
 
 
