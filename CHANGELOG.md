@@ -107,7 +107,7 @@
 
 ### 1.0.19 (2020-19-09)
 
-##### Features updated
+##### Package updated
 
 * keyless-transactions package updated to version 1.1.8.
 

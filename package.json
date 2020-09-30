@@ -8,6 +8,7 @@
     "test-audit": "npm audit --audit-level=moderate",
     "test-lint": "eslint src/**/*.js"
   },
+
   "author": "Inblox dev",
   "license": "ISC",
   "dependencies": {
