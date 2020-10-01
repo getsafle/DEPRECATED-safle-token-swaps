@@ -112,6 +112,13 @@
 * keyless-transactions package updated to version 1.1.8.
 
 
+### 1.0.20 (2020-19-09)
+
+##### Features updated
+
+* Token selector dropdown design updated
+
+
 
 
 

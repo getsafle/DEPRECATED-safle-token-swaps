@@ -223,6 +223,8 @@ function swapModalEvents(widgetInstance) {
   toggleSwap.onclick = async () => {
     showLoader();
     await toggleSourceAndDestinationTokens(widgetInstance);
+    const selectCustomDesign = new CustomEvent('initCustomSelectDesign', {});
+    document.dispatchEvent(selectCustomDesign);
     hideLoader();
   };
 
