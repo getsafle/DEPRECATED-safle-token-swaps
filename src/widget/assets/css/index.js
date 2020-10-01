@@ -226,10 +226,13 @@ export function WidgetCSS() {
   
   .wallet-form .arrow {
     text-align: center;
+    display: inline-block;
   }
   .wallet-form .arrow svg {
     cursor: pointer;
     width: 30px;
+    text-align: center;
+    margin: 0px auto;
   }
   .wallet-form .button-section {
     margin-top: 15px;
@@ -370,12 +373,11 @@ export function WidgetCSS() {
   #show-file-name {
     display: none;
   }
-  #change-wallet span {
-    padding-left: 70%;
+  #change-wallet {
     color: #1f4788;
     cursor: pointer;
   }
-  #change-wallet span:hover {
+  #change-wallet:hover {
     text-decoration: underline;
   }
 
@@ -389,6 +391,95 @@ export function WidgetCSS() {
   /* Firefox */
   .wallet-form .custom-input input[type=number] {
     -moz-appearance: textfield;
+  }
+
+  /* select */
+  .ts-custom-select {
+    width: 100px;
+    display: inline-block;
+    margin-left: 5px;
+  }
+  .ts-custom-select select {
+    display: none; 
+  }
+
+  .select-selected {
+    display: inline-block;
+  }
+
+  /* Style the arrow inside the select element: */
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top:12px;
+    right: 10px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+  }
+
+  /* Point the arrow upwards when the select box is open (active): */
+  .select-selected.select-arrow-active:after {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+  }
+
+  /* style the items (options), including the selected item: */
+  .select-items div,.select-selected {
+    color: #000;
+    cursor: pointer;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  /* Style items (options): */
+  .select-items {
+    position: absolute;
+    top: 40px;
+    left: -25px;
+    right: 0;
+    z-index: 99;
+    background: #fff;
+    box-shadow: 0px 1px 4px #00000029;
+    border-radius: 8px;
+    width: 245px;
+    height: 250px;
+    overflow: auto;
+    color: #2E2E2F;
+    font-size: 12px;
+  }
+
+  /* Hide the items when the select box is closed: */
+   .select-hide {
+    display: none;
+  }
+   .select-items div{
+    padding: 15px;
+  }
+
+   .select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .ts-custom-select ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .ts-custom-select ::-webkit-scrollbar-track {
+    background-color:  #F5F6FA;
+    border-radius: 10px;
+  }
+
+  .ts-custom-select ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #CCCCCC;
   }
 
   /* Loader CSS */
@@ -629,7 +720,5 @@ export function WidgetCSS() {
     100% {
       transform: scaleY(10);
     }
-   
   }`;
-
 }

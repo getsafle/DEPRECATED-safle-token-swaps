@@ -60,14 +60,14 @@ export async function SwapModal(widgetInstance) {
                 <h4>Wallet</h4>
               </div>
             </div>
-            <div id="change-wallet">
-              <span>Change Wallet</span>
+            <div style="text-align: right;">
+              <span id="change-wallet">Change Wallet</span>
             </div>
             <div class="wallet-form custom-form">
               <div class="custom-input">
                 <label>From</label>
                 <input type="number" id="source-quantity" autocomplete="off" value="${sourceQuantity}" placeholder="0" >
-                <div class="custom-drop">
+                <div class="custom-drop ts-custom-select">
                   <span>
                     <img src="https://files.kyberswap.com/DesignAssets/tokens/${sourceSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="source-token-symbol-image">
                   </span>
@@ -77,13 +77,15 @@ export async function SwapModal(widgetInstance) {
                 </div>
                 <p> ${WalletIcon} Wallet Bal : <span id="wallet-balance">${walletBalance}</span></p>
               </div>
-              <div class="arrow" id="toggle-swap">
-                ${UpDownArrowIcon}
+              <div style="text-align: center;">
+                <div class="arrow" id="toggle-swap">
+                  ${UpDownArrowIcon}
+                </div>
               </div>
               <div class="custom-input">
                 <label>To</label>
                 <input type="number" id="destination-quantity" autocomplete="off" value="${destinationQuantity}" placeholder="0">
-                <div class="custom-drop">
+                <div class="custom-drop ts-custom-select">
                   <span class="green">
                   <img src="https://files.kyberswap.com/DesignAssets/tokens/${destinationSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="destination-token-symbol-image">
                   </span>
@@ -306,12 +308,22 @@ const updateBalance = async (widgetInstance, tokenAddress = null) => {
 };
 
 const updateSourceAndDestinationImage = () => {
+  const sourceSymbolElement = document.getElementById('source-token');
   const sourceTokenImageElement = document.getElementById(
     'source-token-symbol-image'
   );
+  const destinationSymbolElement = document.getElementById('destination-token');
   const destinationTokenImageElement = document.getElementById(
     'destination-token-symbol-image'
   );
+
+  if (sourceSymbolElement) {
+    sourceSymbol = sourceSymbolElement.value;
+  }
+
+  if (destinationSymbolElement) {
+    destinationSymbol = destinationSymbolElement.value;
+  }
 
   if (sourceTokenImageElement != null && destinationTokenImageElement != null) {
     sourceTokenImageElement.src = `https://files.kyberswap.com/DesignAssets/tokens/${sourceSymbol.toLowerCase()}.svg`;

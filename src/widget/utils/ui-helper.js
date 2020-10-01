@@ -16,6 +16,7 @@ import {
 import { ModalLoader } from '../pages/loaders/modal-loader';
 
 import { WidgetCSS } from '../assets/css';
+import { WidgetJS } from '../assets/js';
 
 import { initOnClickEvents } from './on-click-events';
 
@@ -38,7 +39,14 @@ export async function generateModal(widgetInstance) {
 
   let style = await document.createElement('style');
   style.innerHTML = WidgetCSS();
-  if (inbloxTokenSwapWidget) await inbloxTokenSwapWidget.appendChild(style);
+
+  let script = await document.createElement('script');
+  script.innerHTML = WidgetJS();
+
+  if (inbloxTokenSwapWidget) {
+    await inbloxTokenSwapWidget.appendChild(style);
+    await inbloxTokenSwapWidget.appendChild(script);
+  }
 
   //Prevent background scrolling when overlay appears
   document.documentElement.style.overflow = 'hidden';
