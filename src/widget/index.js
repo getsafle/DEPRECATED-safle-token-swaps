@@ -18,7 +18,7 @@ import {
 export const eventEmitter = new events.EventEmitter();
 
 export class Widget {
-  constructor() {
+  constructor({ env, rpcURL}) {
     const userAddress = getUserPublicAddress();
 
     this.userLoggedIn = whetherUserLoggedIn();
@@ -33,9 +33,10 @@ export class Widget {
     this.swapValues = {};
     this.response = {};
     this.tokenSwap = new TokenSwapSDK.TokenSwap(
-      `wss://ropsten.infura.io/ws/v3/7484a12fa3b544f79bf51ef44edd6db5`
+      rpcURL
     );
-    this.keylessWidget = KeylessWidget;
+
+    this.keylessWidget = new Keyless.Widget({ env, rpcURL });
 
     this.isInitialised = false;
     this.EVENTS = EVENTS;

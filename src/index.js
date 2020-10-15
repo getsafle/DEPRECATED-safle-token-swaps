@@ -19,7 +19,7 @@ const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract'
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
 
 	
-const { Widget } = require('./widget');
+ const { Widget } = require('./widget');
 
 let web3;
 
@@ -78,8 +78,8 @@ async function getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
 }
 
 class TokenSwap {
-  constructor(wsProvider) {
-    web3 = new Web3(new Web3.providers.WebsocketProvider(wsProvider));
+  constructor(rpcURL) {
+    web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
     this.kyberProxyContractAddress = kyberProxyContractAddress;
     this.kyberProxyContractABI = kyberProxyContractABI;
     this.kyberNetworkContract = new web3.eth.Contract(this.kyberProxyContractABI, this.kyberProxyContractAddress);

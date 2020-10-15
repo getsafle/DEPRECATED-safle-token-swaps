@@ -119,6 +119,13 @@
 * Token selector dropdown design updated
 
 
+### 1.0.20 (2020-19-09)
+
+##### Features updated
+
+* Constructor updated to enable the user to set a custom web3 provider URL.
+
+
 
 
 
