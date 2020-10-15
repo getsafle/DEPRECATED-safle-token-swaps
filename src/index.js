@@ -3,6 +3,8 @@
 const Web3 = require('web3');
 const Tx = require('ethereumjs-tx').Transaction;
 const ethers = require('ethers');
+const EC = require('elliptic').ec;
+const { keccak256 } = require('js-sha3');
 
 const HELPER = require('./utils/helper');
 const {
@@ -18,8 +20,7 @@ const {
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
 
-	
- const { Widget } = require('./widget');
+const { Widget } = require('./widget');
 
 let web3;
 
@@ -409,19 +410,19 @@ async function signViaMetamask(rawTx) {
 }
 
 async function getWallet({
-  wallet, infuraKey, keystoreJson, passphrase, privateKey,
+  wallet, keystoreJson, passphrase, privateKey,
 }) {
   switch (wallet) {
     case 'keyStore': {
       return getWalletFromKeyStoreFile(keystoreJson, passphrase);
     }
     case 'privateKey': {
-      return getWalletFromPrivateKey(infuraKey, privateKey);
+      return getWalletFromPrivateKey(privateKey);
     }
     default:
-    {
-      return getWalletFromMetamask();
-    }
+      {
+        return getWalletFromMetamask();
+      }
   }
 }
 
@@ -439,14 +440,25 @@ async function getWalletFromKeyStoreFile(keystoreJson, passphrase) {
 }
 
 // method to get user wallet from private key
-async function getWalletFromPrivateKey(infuraKey, privateKey) {
-  web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/v3/${infuraKey}`));
-  const wallet = await web3.eth.accounts.privateKeyToAccount(privateKey);
+async function getWalletFromPrivateKey(privateKey) {
 
-  return {
-    wallet,
-  };
+  try {
+    const ec = new EC('secp256k1');
+
+    const key = ec.keyFromPrivate(privateKey, 'hex');
+
+    const publicKey = key.getPublic().encode('hex').slice(2);
+
+    const address = keccak256(Buffer.from(publicKey, 'hex')).slice(64 - 40).toString();
+
+    const checksumAddress = await Web3.utils.toChecksumAddress(`0x${address}`);
+
+    return { wallet: { address: checksumAddress, privateKey } };
+  } catch (error) {
+    return { error };
+  }
 }
+
 // method to get wallet from metamask
 async function getWalletFromMetamask() {
   // eslint-disable-next-line no-undef

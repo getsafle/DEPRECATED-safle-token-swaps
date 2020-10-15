@@ -126,6 +126,12 @@
 * Constructor updated to enable the user to set a custom web3 provider URL.
 
 
+### 1.0.22 (2020-15-10)
+
+##### Features updated
+
+* Method to get wallet via private key updated.
+
 
 
 
