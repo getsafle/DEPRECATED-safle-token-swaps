@@ -119,7 +119,7 @@
 * Token selector dropdown design updated
 
 
-### 1.0.21 (2020-19-09)
+### 1.0.21 (2020-15-10)
 
 ##### Features updated
 
