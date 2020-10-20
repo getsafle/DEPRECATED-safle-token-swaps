@@ -1,149 +1,169 @@
 
-# Inbloxme Token Swaps
+  
 
-Token Swaps SDK 
+# **Inblox Token Swaps - Inbloxme**
 
-##  Get User Wallet
+This package enables usage of inblox token swap widget.
 
-> Get wallet from Inblox Handlename
+  
 
-This method is used to get the user's wallet from Inblox handlename.
+> Disclaimer - This is WIP, and release in beta.
 
-```const wallet = await getWallet({wallet,infuraKey, userHandlename});```
+  
 
-`wallet` - Wallet type (handlename)
-`infuraKey` - Infura API key to initialize web3.
-`userHandlename` - User's Inblox handlename.
+## **Token Swaps**
 
-> Get wallet from Private Key
+  
 
-This method is used to get the user's wallet from private key.
+How many times it has occurred that you need to make a transaction and you hold a different asset? A lot. We built integrated swaps to enable token swaps directly while making a transaction.
 
-```const wallet = await getWallet({wallet,infuraKey, privateKey});```
+  
 
-`wallet` - Wallet type (privateKey)
-`infuraKey` - Infura API key to initialize web3.
-`privateKey` - User's  private key.
+When in crypto be like water, we always need high liquidity of multiple assets while using blockchain applications but most of the times all our portfolio is not in the asset which we need. Integrated token swaps allows the user to transact in whatever crypto they want without having immediate liquidity by completely trustless atomic swaps.
 
-> Get wallet from Keystore file
+  
 
-This method is used to get the user's wallet from Keystore file.
+## **Installation and Usage**
 
-```const wallet = await getWallet({wallet, keystoreJson, passphrase});```
+  
 
-`wallet` - Wallet type (keyStore)
-`keystoreJson` - User's keystore json.
-`passphrase` - Passphrase to unlock keystore file.
+  
 
-> Get wallet from Metamask
+> Installation
 
-This method is used to get the user's wallet from Metamask.
+  
 
-```const wallet = await getWallet({wallet});```
+  
 
-`wallet` - Wallet type (metamask)
+Install the package by running the command,
 
+  
 
+  
 
-> Get wallet from Inblox Handlename
+`npm install @inbloxme/inblox-token-swaps`
 
-This method is used to get the user's wallet from Inblox handlename.
+  
 
-```const wallet = await getWallet({wallet,infuraKey, userHandlename});```
+  
 
-`wallet` - Wallet type (handlename)
-`infuraKey` - Infura API key to initialize web3.
-`userHandlename` - User's Inblox handlename.
+Import the package into your project using,
 
-> Get wallet from Private Key
+  
 
-This method is used to get the user's wallet from private key.
+  
 
-```const wallet = await getWallet({wallet,infuraKey, privateKey});```
+`const inbloxTokenSwaps = require('@inbloxme/inblox-token-swaps');`
 
-`wallet` - Wallet type (privateKey)
-`infuraKey` - Infura API key to initialize web3.
-`privateKey` - User's  private key.
+  
 
-> Get wallet from Keystore file
+## **Token Swaps**
 
-This method is used to get the user's wallet from Keystore file.
+> Initializing
 
-```const wallet = await getWallet({wallet, keystoreJson, passphrase});```
+  
 
-`wallet` - Wallet type (keyStore)
-`keystoreJson` - User's keystore json.
-`passphrase` - Passphrase to unlock keystore file.
+Initialise the constructor using your custom RPC URL.
 
-> Get wallet from Metamask
+  
 
-This method is used to get the user's wallet from Metamask.
+`const tokenSwapWidget = new inbloxTokenSwaps.Widget({ rpcURL, env });`
 
-```const wallet = await getWallet({wallet});```
+  
 
-`wallet` - Wallet type (metamask)
+Parameters,
 
+  
 
-## Swap Tokens
+*  `rpcURL` - Web3 RPC provider URL.
 
-This method is used to Swap tokens.
+  
 
-> Initialize constructor
+*  `env` - API environments (eg. dev, test).
 
-const swap = new TokenSwap('WsProviderUrl');
- 
-> Swap Tokens
+  
 
- await swap.swapTokens({ dstTokenAddress, srcTokenAddress, srcDecimal,
-    maxAllowance, srcQty, userAddress, privateKey, wallet,
-    authenticationToken,inbloxPassword});
+--------------------------
 
-`srcTokenAddress: ` Source token address
-`dstTokenAddress: ` Destination token address
-`srcDecimal`: Source token decimals
-`maxAllowance`: Kyber maximum swap allowance
-`srcQty:` Source token quantity
-`userAddress:` Public address of user
-`wallet:` Selected wallet type(metamask, handlename,keyStore, privateKey)
-`privateKey:` User Private key(only required if wallet type is private key or keystore json)
-`authenticationToken:` User bearer token(only required if wallet type is handlename)
-`inbloxPassword:` User Inblox password(only required if wallet type is handlename)
+  
 
-# Get token list
-This method is used to fetch details of all tokens supported by kyber.
- > getTokensList()
+## Widget Integration
 
-# Get token details
-This method is used to fetch details of particular token.
- > getTokenDetails(tokenSymbol)
- 
-  `tokenSymbol:`Symbol of token whose details are needed
- 
-# Get source token Quantity 
-This method is used to fetch quantity of source tokens.
- > getSrcQty(dstQty, srcDecimals, dstDecimals, rate)
- 
- `dstQty:` Quantity of destination tokens
- `srcDecimals:` Source token decimals
- `dstDecimals:` Destination token decimals
- `rate:` slippage rate
- 
- # Get destination token Quantity 
-This method is used to fetch quantity of source tokens.
- > getDstQty(srcQty, srcDecimals, dstDecimals, rate)
- 
- `srcQty:` Quantity of source tokens
- `srcDecimals:` Source token decimals
- `dstDecimals:` Destination token decimals
- `rate:` slippage rate
- 
- # Get gas limit 
- This method is used to get gas limit from Kyber contract
->getGasLimit(srcTokenAddress, dstTokenAddress, amount)
+  
 
-`srcTokenAddress: ` Source token address
-`dstTokenAddress: ` Destination token address
-`amount`: Source token amount
+> Initializing
 
- 
- 
+  
+
+`const tokenSwapWidget = new inbloxTokenSwaps.Widget({ rpcURL, env });`
+
+  
+
+Parameters,
+
+  
+
+*  `rpcURL` - Web3 RPC provider URL.
+
+  
+
+*  `env` - API environments (eg. dev, test).
+
+  
+
+--------------------------
+
+> Event listeners - Initialization
+
+* Listen for the **successful widget initialization** event using the event listener
+`tokenSwapWidget.on(tokenSwapWidget.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED, (data) => {
+console.log(data);});`
+
+  
+
+* Listen for the **widget close** event using the event listener
+`tokenSwapWidget.on(tokenSwapWidget.EVENTS.TOKEN_SWAP_WIDGET_CLOSED, (data) => {
+console.log(data);});`
+
+  
+
+--------------------------
+
+  
+
+> Event listeners - Token swap transactions
+
+  
+
+* Listen for the **transaction success** event using the event listener
+`tokenSwapWidget.on(tokenSwapWidget.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL, (data) => {
+console.log(data);});`
+
+  
+
+* Listen for the **transaction failure** event using the event listener
+`tokenSwapWidget.on(tokenSwapWidget.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED, (data) => {
+console.log(data);});`
+
+  
+
+--------------------------
+
+  
+
+> Listen for the all the events
+
+`tokenSwapWidget.on(tokenSwapWidget.EVENTS.ALL_EVENTS, (data) => {
+console.log(data);});`
+
+  
+
+--------------------------
+
+## **WIP**
+
+Want to contribute, we would ❤️ that!
+
+We are a Global 🌏🌍🌎 team! 💪
+
+Write to [dev@inblox.me](mailto:dev@inblox.me), or follow us on twitter, [https://twitter.com/inblox_me](https://twitter.com/inblox_me)
