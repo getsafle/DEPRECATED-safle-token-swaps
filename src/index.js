@@ -230,12 +230,8 @@ class TokenSwap {
   // Function to broadcast transactions
   async broadcastTx(from, to, txData, value, gasLimit, userAdd, pvtKey, wallet) {
     const txCount = await web3.eth.getTransactionCount(userAdd);
-    let gasPrice = web3.eth.getGasPrice();
-    const maxGasPrice = await this.kyberNetworkContract.methods
-      .maxGasPrice()
-      .call();
+    const gasPrice = await web3.eth.getGasPrice();
 
-    if (gasPrice >= maxGasPrice) gasPrice = maxGasPrice;
     const rawTx = {
       from,
       to,
