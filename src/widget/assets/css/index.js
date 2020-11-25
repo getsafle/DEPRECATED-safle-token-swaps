@@ -82,7 +82,7 @@ export function WidgetCSS() {
     margin: 0px auto;
     text-align: center;
   }
-  .wallet-modal .wallet-head h4 .via{
+  .wallet-modal .wallet-head h4 .via {
     display: block;
     color: #6f6f6f;
     font-size: 24px;
@@ -95,7 +95,7 @@ export function WidgetCSS() {
     padding-bottom: 10px;
   }
   .wallet-modal .wallet-head h4.mb {
-    margin-top:50px;
+    margin-top: 50px;
   }
   .wallet-modal .wallet-head p span {
     font-weight: 800;
@@ -123,7 +123,8 @@ export function WidgetCSS() {
     display: block;
     color: #2e2e2f;
     font-size: 16px;
-    padding-bottom: 0px;
+    padding-bottom: 20px;
+    margin-bottom: 0px;
   }
   .wallet-form .custom-input {
     position: relative;
@@ -141,6 +142,7 @@ export function WidgetCSS() {
     border: none;
     color: #6f6f6f;
     font-size: 16px;
+    height: 20px;
   }
   .wallet-form .upload-key-store {
     padding: 25px;
@@ -205,10 +207,13 @@ export function WidgetCSS() {
   .custom-drop span {
     border: 100%;
     width: 28px;
-    height: 28px;
+    height: 32px;
     display: inline-block;
     border-radius: 100%;
     text-align: center;
+    vertical-align: middle;
+  }
+  .custom-drop .align-bottom {
     vertical-align: bottom;
   }
   .custom-drop span img {
@@ -259,9 +264,10 @@ export function WidgetCSS() {
     color: #1f4788;
     text-decoration: none;
     font-weight: 600;
+    vertical-align: middle;
   }
   .wallet-form .notes label a svg {
-    width:60px;
+    width: 60px;
   }
   .connect-modal .blue-btn {
     width: 300px;
@@ -277,6 +283,7 @@ export function WidgetCSS() {
   .connetwallet-card-wrap .rsps-card {
     text-align: center;
     width: 25%;
+    height: 165px;
   }
   .rsps-card-input-element {
     display: none;
@@ -318,7 +325,7 @@ export function WidgetCSS() {
     color: #fff;
   }
   .wallet-form.custom-form .custom-input input {
-    width: 100%;
+    width: 91%;
   }
   
   /* modal */
@@ -342,7 +349,7 @@ export function WidgetCSS() {
     border: 0px;
     border-radius: 100%;
     background: #000;
-    padding: 3px 9px;
+    padding: 7px 9px;
     cursor: pointer;
   }
   
@@ -368,7 +375,8 @@ export function WidgetCSS() {
   #error-message {
     font-size: 11px;
     color: red;
-    padding-bottom:0px;
+    padding-bottom: 0px;
+    display: inline-block;
   }
   #show-file-name {
     display: none;
@@ -380,7 +388,7 @@ export function WidgetCSS() {
   #change-wallet:hover {
     text-decoration: underline;
   }
-
+  
   /* Chrome, Safari, Edge, Opera */
   .wallet-form .custom-input input::-webkit-outer-spin-button,
   .wallet-form .custom-input input::-webkit-inner-spin-button {
@@ -389,10 +397,10 @@ export function WidgetCSS() {
   }
   
   /* Firefox */
-  .wallet-form .custom-input input[type=number] {
+  .wallet-form .custom-input input[type='number'] {
     -moz-appearance: textfield;
   }
-
+  
   /* select */
   .ts-custom-select {
     width: 100px;
@@ -400,18 +408,18 @@ export function WidgetCSS() {
     margin-left: 5px;
   }
   .ts-custom-select select {
-    display: none; 
+    display: none;
   }
-
+  
   .select-selected {
     display: inline-block;
   }
-
+  
   /* Style the arrow inside the select element: */
   .select-selected:after {
     position: absolute;
-    content: "";
-    top:12px;
+    content: '';
+    top: 12px;
     right: 10px;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
@@ -420,7 +428,7 @@ export function WidgetCSS() {
     display: inline-block;
     padding: 2px;
   }
-
+  
   /* Point the arrow upwards when the select box is open (active): */
   .select-selected.select-arrow-active:after {
     transform: rotate(-135deg);
@@ -430,15 +438,19 @@ export function WidgetCSS() {
     display: inline-block;
     padding: 2px;
   }
-
+  .select-items span {
+    height: 42px;
+  }
+  
   /* style the items (options), including the selected item: */
-  .select-items div,.select-selected {
+  .select-items div,
+  .select-selected {
     color: #000;
     cursor: pointer;
     font-size: 14px;
-    vertical-align: middle;
+    line-height: 30px;
   }
-
+  
   /* Style items (options): */
   .select-items {
     position: absolute;
@@ -452,36 +464,43 @@ export function WidgetCSS() {
     width: 245px;
     height: 250px;
     overflow: auto;
-    color: #2E2E2F;
+    color: #2e2e2f;
     font-size: 12px;
   }
-
+  
   /* Hide the items when the select box is closed: */
-   .select-hide {
+  .select-hide {
     display: none;
   }
-   .select-items div{
+  .select-items div {
     padding: 15px;
   }
-
-   .select-items div:hover, .same-as-selected {
+  
+  .select-items div:hover,
+  .same-as-selected {
     background-color: rgba(0, 0, 0, 0.1);
   }
-
+  
   .ts-custom-select ::-webkit-scrollbar {
     width: 8px;
   }
-
+  
   .ts-custom-select ::-webkit-scrollbar-track {
-    background-color:  #F5F6FA;
+    background-color: #f5f6fa;
     border-radius: 10px;
   }
-
+  
   .ts-custom-select ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #CCCCCC;
+    background-color: #cccccc;
   }
-
+  
+  #back-arrow-icon {
+    float: left;
+    cursor: pointer;
+    padding: 15px 0px 0px 10px;
+  }
+  
   /* Loader CSS */
   #loader {
     display: none;
@@ -495,7 +514,7 @@ export function WidgetCSS() {
     top: 0;
     left: 0;
   }
-
+  
   .loader-container {
     position: relative;
     z-index: 999;
@@ -506,93 +525,70 @@ export function WidgetCSS() {
     left: 0;
     bottom: 0;
     right: 0;
+    transform: translateY(-50%);
+    text-align: center;
   }
-
-  .progress-message {
-    padding-top: 15px;
-    font-weight: 600;
-    color: #ffffff;
+  
+  .loader-container img {
+    width: 80%;
   }
-
-  .bar {
-    width: 10px;
-    height: 2px;
-    margin-right: 4px;
-    display: inline-block;
-    background-color: #1e4788;
-  }
-
-  .progress {
-    width: 140px;
-    height: 5px;
-    display: block;
-    background-color: #1e4788;
-    position: relative;
-    top: 10px;
-    animation-name: Progress;
-    animation-duration: 800ms;
-    animation-timing-function: ease-in-out;
-    animation-delay: 0s;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-fill-mode: forwards;
-  }
-
+  
   @media only screen and (max-width: 767px) {
-    .wallet-modal .wallet-head h4.mb{
-      margin-top:20px;
+    .wallet-modal .wallet-head h4.mb {
+      margin-top: 20px;
     }
   
     .connect-modal .blue-btn {
-      width:100%;
+      width: 100%;
     }
-    .custom-input .custom-drop{
+    .custom-input .custom-drop {
       top: 36px;
-      left:15px;
+      left: 15px;
     }
-    .wallet-form .custom-input input{
+    .wallet-form .custom-input input {
       padding: 10px;
       font-size: 14px;
     }
-    .widget-modal-content{
-      padding:15px;
+    .widget-modal-content {
+      padding: 15px;
     }
-    .custom-modal .content{
-      width:100%;
+    .custom-modal .content {
+      width: 100%;
     }
   
-    .rsps-icon{
-      width:85px;
+    .rsps-icon {
+      width: 85px;
     }
-    .wallet-modal .wallet-head h4{
-      font-size:18px;
+    .wallet-modal .wallet-head h4 {
+      font-size: 18px;
     }
-    .rsps-text label{
+    .rsps-text label {
       font-size: 12px;
       line-height: 18px;
     }
-    .connetwallet-card-wrap .rsps-card{
-      margin-right:15px;
+    .connetwallet-card-wrap .rsps-card {
+      margin-right: 15px;
     }
-    .custom-modal .custom-dialog{
-      width:90%;
+    .custom-modal .custom-dialog {
+      width: 90%;
     }
-    .wallet-modal .wallet-head svg{
-      width:50px;
-      height:50px;
+    .wallet-modal .wallet-head svg {
+      width: 50px;
+      height: 50px;
     }
-    .wallet-form .notes p{
+    .wallet-form .notes p {
       margin-bottom: 0px;
     }
-    #change-wallet span{
+    #change-wallet span {
       padding-left: 53%;
     }
   }
+  
   @media only screen and (max-width: 320px) {
-    .widget-modal-content{
-      padding:5px;
+    .widget-modal-content {
+      padding: 5px;
     }
-    .wallet-form .custom-input{
+    .wallet-form .custom-input {
       margin-bottom: 0px;
     }
     .modal-loader-content {
@@ -601,124 +597,6 @@ export function WidgetCSS() {
     .wallet-form .upload-key-store {
       padding: 10px;
       margin-bottom: 10px;
-    }
-  }
-
-  @keyframes Progress {
-    0% {
-      width: 0px;
-    }
-    100% {
-      width: 170px;
-    }
-  }
-  .bar1 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.03s;
-  }
-
-  .bar2 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.06s;
-  }
-
-  .bar3 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.09s;
-  }
-
-  .bar4 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.12s;
-  }
-
-  .bar5 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.15s;
-  }
-
-  .bar6 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.18s;
-  }
-
-  .bar7 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.21s;
-  }
-
-  .bar8 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.24s;
-  }
-
-  .bar9 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.27s;
-  }
-
-  .bar10 {
-    animation-name: Bar;
-    animation-duration: 800ms;
-    animation-timing-function: cubic- bezier(0.54, -0.01, 0.42, 0.99);
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-    animation-fill-mode: both;
-    animation-delay: 0.3s;
-  }
-
-  @keyframes Bar {
-    0% {
-      background-color: #1e4788;
-      transform: scaleY(0.5);
-    }
-    100% {
-      transform: scaleY(10);
     }
   }`;
 }

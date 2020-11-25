@@ -33,7 +33,7 @@ export function ConnectToWalletModal() {
                         ${HandleNameIcon}
                       </div>
                       <div class="rsps-text">
-                        <label>Inbloxme HandleName</label>
+                        <label>Inblox Id</label>
                       </div>
                     </div>
                   </label>
@@ -81,7 +81,7 @@ export function ConnectToWalletModal() {
                 </div>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
               </div>
             </div>
           </div>
