@@ -11,9 +11,17 @@ import { WalletIcon } from '../../assets/images/wallet-icon';
 
 import { showModalLoader, hideModalLoader } from '../../utils';
 
+import {
+  INSUFFICIENT_FUNDS,
+  TOKEN_UNDER_MAINTENANCE,
+  CANT_SWAP_SAME_TOKEN
+} from '../../../constants/responses';
+
+import { KYBER_SWAP_TOKEN_IMAGE_BASE_URL } from '../../../config';
+
 let allTokens = [];
-let destinationQuantity = 0.0;
-let sourceQuantity = 0.0;
+let destinationQuantity;
+let sourceQuantity;
 let destinationSymbol;
 let sourceSymbol;
 let destinationAmount;
@@ -22,8 +30,8 @@ let walletBalance;
 let slippagePercentage;
 
 export async function SwapModal(widgetInstance) {
-  destinationQuantity = 0.0;
-  sourceQuantity = 0.0;
+  destinationQuantity = '';
+  sourceQuantity = '';
   let sourceTokenListOptions = '';
   let destinationTokenListOptions = '';
 
@@ -68,8 +76,8 @@ export async function SwapModal(widgetInstance) {
                 <label>From</label>
                 <input type="number" id="source-quantity" autocomplete="off" value="${sourceQuantity}" placeholder="0" >
                 <div class="custom-drop ts-custom-select">
-                  <span>
-                    <img src="https://files.kyberswap.com/DesignAssets/tokens/${sourceSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="source-token-symbol-image">
+                  <span class="align-bottom">
+                    <img src="${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${sourceSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="source-token-symbol-image">
                   </span>
                   <select id="source-token">
                     ${sourceTokenListOptions}
@@ -86,8 +94,8 @@ export async function SwapModal(widgetInstance) {
                 <label>To</label>
                 <input type="number" id="destination-quantity" autocomplete="off" value="${destinationQuantity}" placeholder="0">
                 <div class="custom-drop ts-custom-select">
-                  <span class="green">
-                  <img src="https://files.kyberswap.com/DesignAssets/tokens/${destinationSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="destination-token-symbol-image">
+                  <span class="green align-bottom">
+                  <img src="${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${destinationSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="destination-token-symbol-image">
                   </span>
                   <select id="destination-token">
                     ${destinationTokenListOptions}
@@ -125,7 +133,7 @@ export async function SwapModal(widgetInstance) {
 const tokenPairUnderMaintenance = () => {
   const errorMessage = document.getElementById('error-message');
   if (errorMessage) {
-    errorMessage.innerHTML = `This token pair is currently under maintainance. Please try after some time`;
+    errorMessage.innerHTML = TOKEN_UNDER_MAINTENANCE;
     errorMessage.style.display = 'block';
     document.getElementById('swap-now-button').disabled = true;
   }
@@ -220,7 +228,7 @@ const validSourceAndDestinationToken = () => {
   destinationQuantity = document.getElementById('destination-quantity').value;
 
   if (sourceSymbol == destinationSymbol) {
-    errorMessage.innerHTML = `You cannot swap same tokens`;
+    errorMessage.innerHTML = CANT_SWAP_SAME_TOKEN;
     errorMessage.style.display = 'block';
     document.getElementById('swap-now-button').disabled = true;
     return false;
@@ -300,9 +308,9 @@ const updateBalance = async (widgetInstance, tokenAddress = null) => {
     .getTokenBalance(sourceTokenAddress, widgetInstance.userAddress)
     .then((res) => {
       const balance = parseFloat(res.balance);
-      walletBalance = balance;
+      walletBalance = isNaN(balance) ? 0 : balance;
       if (walletBalanceSpan) {
-        walletBalanceSpan.innerHTML = balance;
+        walletBalanceSpan.innerHTML = walletBalance;
       }
     });
 };
@@ -326,8 +334,8 @@ const updateSourceAndDestinationImage = () => {
   }
 
   if (sourceTokenImageElement != null && destinationTokenImageElement != null) {
-    sourceTokenImageElement.src = `https://files.kyberswap.com/DesignAssets/tokens/${sourceSymbol.toLowerCase()}.svg`;
-    destinationTokenImageElement.src = `https://files.kyberswap.com/DesignAssets/tokens/${destinationSymbol.toLowerCase()}.svg`;
+    sourceTokenImageElement.src = `${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${sourceSymbol.toLowerCase()}.svg`;
+    destinationTokenImageElement.src = `${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${destinationSymbol.toLowerCase()}.svg`;
   }
 };
 
@@ -436,7 +444,7 @@ export const getDestinationQuantity = async (widgetInstance) => {
 
     if (sourceQuantity != '' && sourceQuantity != 0) {
       if (sourceQuantity > walletBalance) {
-        errorMessage.innerHTML = `Insufficient Balance`;
+        errorMessage.innerHTML = INSUFFICIENT_FUNDS;
         errorMessage.style.display = 'block';
         swapNowButton.disabled = true;
       } else {
@@ -518,9 +526,9 @@ export const updateTokenSwapsValue = (widgetInstance) => {
   );
 
   if (sourceQuantity > walletBalance) {
-    errorMessage.innerHTML = 'Insufficient Balance';
+    errorMessage.innerHTML = INSUFFICIENT_FUNDS;
     errorMessage.style.display = 'block';
-    return { status: false, message: 'Insufficient Balance' };
+    return { status: false, message: INSUFFICIENT_FUNDS };
   } else {
     errorMessage.style.display = 'none';
   }
@@ -535,5 +543,5 @@ export const updateTokenSwapsValue = (widgetInstance) => {
     dstSymbol: selectedTokens.destinationToken.symbol // For success screen properties.
   };
 
-  return { status: true, message: 'Swap proceed with password' };
+  return { status: true };
 };

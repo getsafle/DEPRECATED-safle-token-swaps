@@ -1,5 +1,3 @@
-import { eventEmitter } from '..';
-
 import { setActiveTab, showLoader, hideLoader, closeModal } from './ui-helper';
 
 import {
@@ -23,6 +21,12 @@ import {
 
 import { setUserPublicAddress, setSwapVia } from './storage-and-user-helper';
 import { getPrivateKeyFromKeyStore } from '../pages/swap-modals/pass-pharse-to-swap';
+
+import {
+  INVALID_WALLET_OPTION,
+  ENTER_PRIVATE_KEY,
+  ENTER_PASS_PHRASE
+} from '../../constants/responses';
 
 let tempTimer;
 
@@ -61,10 +65,21 @@ function initialiseKeylessWidget(widgetInstance) {
     widgetInstance.keylessWidget.EVENTS.KEYLESS_WIDGET_CLOSED,
     (widgetCloseData) => {
       if (widgetCloseData.status) {
-        if (widgetCloseData.initMethod == 'login') {
+        const initMethod = widgetCloseData.initMethod;
+        const tranxHashExist =
+          widgetCloseData.transactionHash != undefined &&
+          widgetCloseData.transactionHash != '';
+
+        if (initMethod == 'login') {
           setActiveTab(widgetInstance, 'swap-modal');
-        } else if (widgetCloseData.initMethod == 'sign-and-send-transaction') {
+        } else if (
+          initMethod == 'sign-and-send-transaction' &&
+          tranxHashExist
+        ) {
           setActiveTab(widgetInstance, 'success-modal');
+        } else {
+          // Default redirection to swap widget.
+          setActiveTab(widgetInstance, 'swap-modal');
         }
       }
     }
@@ -76,7 +91,7 @@ function signAndSendTransactionUsingKeyless(widgetInstance, rawTransaction) {
 
   // Listening to transaction success event.
   widgetInstance.keylessWidget.on(
-    widgetInstance.keylessWidget.EVENTS.TRANSACTION_SUCCESSFUL,
+    widgetInstance.keylessWidget.EVENTS.SIGN_AND_SEND_TRANSACTION_SUCCESSFUL,
     (transactionData) => {
       if (transactionData.status) {
         const transactionHash = transactionData.data.transactionHash;
@@ -94,7 +109,7 @@ function signAndSendTransactionUsingKeyless(widgetInstance, rawTransaction) {
 
   // Listening to transaction failure event.
   widgetInstance.keylessWidget.on(
-    widgetInstance.keylessWidget.EVENTS.TRANSACTION_FAILED,
+    widgetInstance.keylessWidget.EVENTS.SIGN_AND_SEND_TRANSACTION_FAILED,
     (transactionData) => {
       widgetInstance.response = transactionData.data;
       failureEmitter(widgetInstance);
@@ -105,11 +120,19 @@ function signAndSendTransactionUsingKeyless(widgetInstance, rawTransaction) {
   widgetInstance.keylessWidget.on(
     widgetInstance.keylessWidget.EVENTS.KEYLESS_WIDGET_CLOSED,
     (widgetCloseData) => {
+      const tranxHashExist =
+        widgetCloseData.transactionHash != undefined &&
+        widgetCloseData.transactionHash != '';
+
       if (
         widgetCloseData.status &&
-        widgetCloseData.initMethod == 'sign-and-send-transaction'
+        widgetCloseData.initMethod == 'sign-and-send-transaction' &&
+        tranxHashExist
       ) {
         setActiveTab(widgetInstance, 'success-modal');
+      } else {
+        // Default redirection to swap widget.
+        setActiveTab(widgetInstance, 'swap-modal');
       }
     }
   );
@@ -122,7 +145,7 @@ async function swapTokensBasedOnWalletSelected(widgetInstance) {
         widgetInstance
       );
 
-      closeModal();
+      closeModal(widgetInstance);
       signAndSendTransactionUsingKeyless(widgetInstance, rawTransactionDetails);
       break;
     case 'metamask':
@@ -166,7 +189,7 @@ async function swapTokensBasedOnWalletSelected(widgetInstance) {
       }
       break;
     default:
-      throw new Error('Invalid wallet option');
+      throw new Error(INVALID_WALLET_OPTION);
   }
 }
 
@@ -241,20 +264,23 @@ function successEmitter(widgetInstance) {
   const userAddress = widgetInstance.userAddress;
   const swapVia = widgetInstance.swapVia;
 
-  eventEmitter.emit(widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL, {
-    status: true,
-    eventName: widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL,
-    data: {
-      srcToken: swapValues.srcTokenAddress,
-      destToken: swapValues.dstTokenAddress,
-      srcQty: swapValues.srcQty,
-      dstQty: swapValues.dstQty,
-      walletType: swapVia,
-      publicAddress: userAddress,
-      txHash: widgetInstance.transactionHash,
-      txReceipt: widgetInstance.response
+  widgetInstance.eventEmitter.emit(
+    widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL,
+    {
+      status: true,
+      eventName: widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL,
+      data: {
+        srcToken: swapValues.srcTokenAddress,
+        destToken: swapValues.dstTokenAddress,
+        srcQty: swapValues.srcQty,
+        dstQty: swapValues.dstQty,
+        walletType: swapVia,
+        publicAddress: userAddress,
+        txHash: widgetInstance.transactionHash,
+        txReceipt: widgetInstance.response
+      }
     }
-  });
+  );
 }
 
 function failureEmitter(widgetInstance) {
@@ -262,22 +288,25 @@ function failureEmitter(widgetInstance) {
   const userAddress = widgetInstance.userAddress;
   const swapVia = widgetInstance.swapVia;
 
-  eventEmitter.emit(widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED, {
-    status: true,
-    eventName: widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED,
-    data: {
-      srcToken: swapValues.srcTokenAddress,
-      destToken: swapValues.dstTokenAddress,
-      srcQty: swapValues.srcQty,
-      dstQty: swapValues.dstQty,
-      walletType: swapVia,
-      publicAddress: userAddress,
-      txHash: widgetInstance.transactionHash
-        ? widgetInstance.transactionHash
-        : '',
-      txReceipt: widgetInstance.response
+  widgetInstance.eventEmitter.emit(
+    widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED,
+    {
+      status: true,
+      eventName: widgetInstance.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED,
+      data: {
+        srcToken: swapValues.srcTokenAddress,
+        destToken: swapValues.dstTokenAddress,
+        srcQty: swapValues.srcQty,
+        dstQty: swapValues.dstQty,
+        walletType: swapVia,
+        publicAddress: userAddress,
+        txHash: widgetInstance.transactionHash
+          ? widgetInstance.transactionHash
+          : '',
+        txReceipt: widgetInstance.response
+      }
     }
-  });
+  );
 }
 
 export function initOnClickEvents(widgetInstance) {
@@ -290,7 +319,7 @@ export function initOnClickEvents(widgetInstance) {
       );
       connectViaHanleName.onclick = () => {
         widgetInstance.swapVia = 'handlename';
-        closeModal();
+        closeModal(widgetInstance);
         initialiseKeylessWidget(widgetInstance);
       };
 
@@ -337,6 +366,11 @@ export function initOnClickEvents(widgetInstance) {
         }
         hideLoader();
       };
+
+      const privateBackIcon = document.getElementById('back-arrow-icon');
+      privateBackIcon.onclick = () => {
+        setActiveTab(widgetInstance, 'connect-to-wallet-modal');
+      };
       break;
     case 'connect-via-keystore-modal':
       const keyStoreFile = document.getElementById('key-store-file');
@@ -374,6 +408,11 @@ export function initOnClickEvents(widgetInstance) {
           fileread.readAsText(file);
         }, 1500);
       };
+
+      const keyStoreBackIcon = document.getElementById('back-arrow-icon');
+      keyStoreBackIcon.onclick = () => {
+        setActiveTab(widgetInstance, 'connect-to-wallet-modal');
+      };
       break;
     case 'connect-via-pass-phrase-modal':
       const connectViaPassPhraseButton = document.getElementById(
@@ -406,7 +445,7 @@ export function initOnClickEvents(widgetInstance) {
           widgetInstance.privateKey = privateKey;
           swapTokensBasedOnWalletSelected(widgetInstance);
         } else {
-          errorMessage.innerHTML = `Enter private key to proceed swapping.`;
+          errorMessage.innerHTML = ENTER_PRIVATE_KEY;
           errorMessage.style.display = 'block';
         }
       };
@@ -466,7 +505,7 @@ export function initOnClickEvents(widgetInstance) {
             swapTokensBasedOnWalletSelected(widgetInstance);
           }
         } else {
-          errorMessage.innerHTML = `Enter pass phrase to proceed swapping.`;
+          errorMessage.innerHTML = ENTER_PASS_PHRASE;
           errorMessage.style.display = 'block';
         }
       };
@@ -476,7 +515,7 @@ export function initOnClickEvents(widgetInstance) {
         'check-with-meta-mask-button'
       );
       checkWithMetaMaskButton.onclick = () => {
-        closeModal();
+        closeModal(widgetInstance);
       };
       break;
     case 'success-modal':
