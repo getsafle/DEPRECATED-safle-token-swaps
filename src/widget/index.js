@@ -1,7 +1,6 @@
 import events from 'events';
 
 import Keyless from '@inbloxme/keyless-transactions';
-const KeylessWidget = new Keyless.Widget();
 
 const TokenSwapSDK = require('..');
 
@@ -16,7 +15,7 @@ import {
 } from './utils';
 
 export class Widget {
-  constructor({ rpcURL }) {
+  constructor({ rpcURL, env }) {
     const userAddress = getUserPublicAddress();
 
     this.userLoggedIn = isUserLoggedIn();
@@ -31,9 +30,10 @@ export class Widget {
     this.swapValues = {};
     this.response = {};
     this.tokenSwap = new TokenSwapSDK.TokenSwap(rpcURL);
-    
-    
-    this.keylessWidget = KeylessWidget;
+    this.keylessWidget = new Keyless.Widget({
+      rpcURL,
+      env
+    });
 
     this.isInitialised = false;
     this.EVENTS = EVENTS;
