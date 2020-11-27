@@ -21,7 +21,7 @@ export function ConnectViaPassPhraseModal() {
                 ${InbloxLogo}
                 <h4>Connect your Wallet  <span class="via">via </span> Inblox Key Store</h4>
                 <h2>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry
+                This is not a recommended method of using Swaps.
                 </h2>
               </div>
             </div>
