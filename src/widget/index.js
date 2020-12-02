@@ -16,7 +16,7 @@ import {
 } from './utils';
 
 export class Widget {
-  constructor() {
+  constructor({ rpcURL }) {
     const userAddress = getUserPublicAddress();
 
     this.userLoggedIn = isUserLoggedIn();
@@ -30,9 +30,9 @@ export class Widget {
     this.activeTab = ConnectToWalletModal();
     this.swapValues = {};
     this.response = {};
-    this.tokenSwap = new TokenSwapSDK.TokenSwap(
-      `wss://ropsten.infura.io/ws/v3/7484a12fa3b544f79bf51ef44edd6db5`
-    );
+    this.tokenSwap = new TokenSwapSDK.TokenSwap(rpcURL);
+    
+    
     this.keylessWidget = KeylessWidget;
 
     this.isInitialised = false;
