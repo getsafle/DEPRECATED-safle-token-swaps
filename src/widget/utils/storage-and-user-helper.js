@@ -16,6 +16,6 @@ export function getSwapVia() {
   return localStorage.getItem('swapvia');
 }
 
-export function whetherUserLoggedIn() {
+export function isUserLoggedIn() {
   return getUserPublicAddress() ? true : false;
 }

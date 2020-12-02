@@ -8,20 +8,18 @@ const TokenSwapSDK = require('..');
 import { ConnectToWalletModal } from './pages';
 
 import {
-  whetherUserLoggedIn,
+  isUserLoggedIn,
   generateModal,
   getUserPublicAddress,
   updateAuthModal,
   EVENTS
 } from './utils';
 
-export const eventEmitter = new events.EventEmitter();
-
 export class Widget {
   constructor() {
     const userAddress = getUserPublicAddress();
 
-    this.userLoggedIn = whetherUserLoggedIn();
+    this.userLoggedIn = isUserLoggedIn();
     this.swapVia = '';
     this.handleName = '';
     this.userAddress = userAddress != null ? userAddress : '';
@@ -42,6 +40,7 @@ export class Widget {
     this.ALL_EVENTS = '*';
     this.ERROR = 'TOKEN_SWAP_ERROR';
     this.INITIALISED_EVENTS = [];
+    this.eventEmitter = new events.EventEmitter();
   }
 
   async initTokenSwap() {
@@ -61,18 +60,18 @@ Widget.prototype.on = function (type, cb) {
 
       if (!this.INITIALISED_EVENTS.includes(evName)) {
         this.INITIALISED_EVENTS.push(evName);
-        eventEmitter.on(evName, cb);
+        this.eventEmitter.on(evName, cb);
       }
     }
   }
 
   if (EVENTS[type] && !this.INITIALISED_EVENTS.includes(EVENTS[type])) {
     this.INITIALISED_EVENTS.push(EVENTS[type]);
-    eventEmitter.on(type, cb);
+    this.eventEmitter.on(type, cb);
   }
 
   if (type === this.ERROR && !this.INITIALISED_EVENTS.includes(this.ERROR)) {
     this.INITIALISED_EVENTS.push(this.ERROR);
-    eventEmitter.on(this.ERROR, cb);
+    this.eventEmitter.on(this.ERROR, cb);
   }
 };

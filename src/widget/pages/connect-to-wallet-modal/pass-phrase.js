@@ -39,7 +39,7 @@ export function ConnectViaPassPhraseModal() {
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
               </div>
             </div>
           </div>
@@ -62,7 +62,6 @@ export const connectWithKeyStore = async (widgetInstance) => {
 
   let keyStoreCredentials = {
     wallet: 'keyStore',
-    infuraKey: '7484a12fa3b544f79bf51ef44edd6db5',
     keystoreJson: encryptedJson,
     passphrase: passPhrase
   };
@@ -76,11 +75,11 @@ export const connectWithKeyStore = async (widgetInstance) => {
       widgetInstance.userAddress = res.address;
       setUserPublicAddress(res.address);
       setSwapVia('keyStore');
-      return { status: true, message: 'Got wallet address' };
+      return { status: true };
     } else {
       errorMessage.innerHTML = res.error;
       errorMessage.style.display = 'block';
-      return { status: false, message: res.error };
+      return { status: false };
     }
   });
 };

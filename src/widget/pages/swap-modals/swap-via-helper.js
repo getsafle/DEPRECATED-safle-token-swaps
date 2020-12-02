@@ -1,3 +1,11 @@
+import { ETHERSCAN_TRANSACTION_URL } from '../../../config';
+
+import {
+  METAMASK_CONNECTED_SUCCESSFULLY,
+  SWAP_SUCCESSFUL,
+  TRANSACTION_REVERTED_BY_EVM
+} from '../../../constants/responses';
+
 function swapResponseHandler(widgetInstance, response) {
   const errorMessage = document.getElementById('error-message');
 
@@ -8,16 +16,16 @@ function swapResponseHandler(widgetInstance, response) {
 
   if (response && response.status) {
     errorMessage.style.display = 'none';
-    return { status: true, message: 'Swap successful' };
+    return { status: true, message: SWAP_SUCCESSFUL };
   } else {
-    errorMessage.innerHTML = `The transaction has been reverted by EVM. For more info check it out
-    <a href="https://ropsten.etherscan.io/tx/${widgetInstance.transactionHash}" target="_blank">here</a>
+    errorMessage.innerHTML = `${TRANSACTION_REVERTED_BY_EVM}
+    <a href="${ETHERSCAN_TRANSACTION_URL}/${widgetInstance.transactionHash}" target="_blank">here</a>
     `;
     errorMessage.style.display = 'block';
     return {
       status: false,
-      message: `The transaction has been reverted by EVM. For more info check it out
-      <a href="https://ropsten.etherscan.io/tx/${widgetInstance.transactionHash}" target="_blank">here</a>
+      message: `${TRANSACTION_REVERTED_BY_EVM}
+      <a href="${ETHERSCAN_TRANSACTION_URL}/${widgetInstance.transactionHash}" target="_blank">here</a>
       `
     };
   }
@@ -83,6 +91,6 @@ export const swapTokenUsingMetaMask = async (widgetInstance) => {
     .swapTokens(swapCredentials)
     .then((_) => ({
       status: true,
-      message: 'Chheck with MetaMask connected'
+      message: METAMASK_CONNECTED_SUCCESSFULLY
     }));
 };

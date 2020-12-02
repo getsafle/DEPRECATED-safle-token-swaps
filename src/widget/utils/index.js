@@ -1,5 +1,5 @@
 import {
-  whetherUserLoggedIn,
+  isUserLoggedIn,
   setUserPublicAddress,
   getUserPublicAddress
 } from './storage-and-user-helper';
@@ -16,7 +16,7 @@ import {
 export { default as EVENTS } from './events';
 
 export {
-  whetherUserLoggedIn,
+  isUserLoggedIn,
   generateModal,
   showLoader,
   hideLoader,
