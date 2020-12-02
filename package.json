@@ -8,7 +8,6 @@
     "test-audit": "npm audit --audit-level=moderate",
     "test-lint": "eslint src/**/*.js"
   },
-
   "author": "Inblox dev",
   "license": "ISC",
   "dependencies": {
@@ -16,8 +15,10 @@
     "axios": "^0.19.2",
     "bn": "^1.0.5",
     "bn.js": "^5.1.1",
+    "elliptic": "^6.5.3",
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^5.0.8",
+    "js-sha3": "^0.8.0",
     "web3": "^1.2.7"
   },
   "devDependencies": {
