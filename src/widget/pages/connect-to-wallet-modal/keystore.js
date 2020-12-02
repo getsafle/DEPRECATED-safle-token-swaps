@@ -1,6 +1,7 @@
 import { getWallet } from '../../../';
 
 import { CloseIcon } from '../../assets/images/close-icon';
+import { BackIcon } from '../../assets/images/back-icon';
 import { InbloxLogo } from '../../assets/images/inblox-logo';
 import { UploadIcon } from '../../assets/images/upload-icon';
 import { InbloxMe } from '../../assets/images/inblox-me';
@@ -12,6 +13,9 @@ export function ConnectViaKeyStoreModal() {
   <div class="custom-dialog">
     ${Loader}
     <div class="content">
+      <div id="back-arrow-icon">
+        ${BackIcon}
+      </div>
       <div class="common-modal-body">
         <div class="wallet-modal">
           <div class="widget-modal-content">
@@ -50,7 +54,7 @@ export function ConnectViaKeyStoreModal() {
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
               </div>
             </div>
           </div>
