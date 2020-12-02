@@ -11,7 +11,7 @@
   "author": "Inblox dev",
   "license": "ISC",
   "dependencies": {
-    "@inbloxme/keyless-transactions": "^1.1.8",
+    "@inbloxme/keyless-transactions": "^1.3.0",
     "axios": "^0.19.2",
     "bn": "^1.0.5",
     "bn.js": "^5.1.1",
