@@ -1,6 +1,7 @@
 import { getWallet } from '../../../';
 
 import { CloseIcon } from '../../assets/images/close-icon';
+import { BackIcon } from '../../assets/images/back-icon';
 import { InbloxLogo } from '../../assets/images/inblox-logo';
 import { UploadIcon } from '../../assets/images/upload-icon';
 import { InbloxMe } from '../../assets/images/inblox-me';
@@ -12,6 +13,9 @@ export function ConnectViaKeyStoreModal() {
   <div class="custom-dialog">
     ${Loader}
     <div class="content">
+      <div id="back-arrow-icon">
+        ${BackIcon}
+      </div>
       <div class="common-modal-body">
         <div class="wallet-modal">
           <div class="widget-modal-content">
@@ -20,7 +24,7 @@ export function ConnectViaKeyStoreModal() {
                 ${InbloxLogo}
                 <h4>Connect your Wallet <span class="via">via </span>KeyStore File</h4>
                 <h2>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry
+                This is not a recommended method of using Swaps.
                 </h2>
               </div>
             </div>
@@ -50,7 +54,7 @@ export function ConnectViaKeyStoreModal() {
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
               </div>
             </div>
           </div>

@@ -1,5 +1,3 @@
-import { eventEmitter } from '..';
-
 import {
   ConnectToWalletModal,
   SwapModal,
@@ -21,6 +19,8 @@ import { WidgetJS } from '../assets/js';
 import { initOnClickEvents } from './on-click-events';
 
 import { getUserPublicAddress, getSwapVia } from './storage-and-user-helper';
+
+import { WIDGET_CLOSED } from '../../constants/responses';
 
 export async function generateModal(widgetInstance) {
   let wrapper = document.getElementById('inbloxTokenSwapWidget');
@@ -58,13 +58,16 @@ export async function generateModal(widgetInstance) {
 
   if (!widgetInstance.isInitialised) {
     widgetInstance.isInitialised = true;
-    eventEmitter.emit(widgetInstance.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED, {
-      status: true,
-      eventName: widgetInstance.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED
-    });
+    widgetInstance.eventEmitter.emit(
+      widgetInstance.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED,
+      {
+        status: true,
+        eventName: widgetInstance.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED
+      }
+    );
   }
 
-  initCloseEvents();
+  initCloseEvents(widgetInstance);
   initOnClickEvents(widgetInstance); // Initialise all onclick events.
 }
 
@@ -114,33 +117,33 @@ export function hideModalLoader() {
   return;
 }
 
-export function closeModal() {
+export function closeModal(widgetInstance) {
   //Enable background scrolling when overlay removed
   document.documentElement.style.overflow = 'auto';
   document.body.scroll = 'yes';
   document.getElementById('inbloxTokenSwapWidget').remove();
 
-  eventEmitter.emit('TOKEN_SWAP_WIDGET_CLOSED', {
+  widgetInstance.eventEmitter.emit('TOKEN_SWAP_WIDGET_CLOSED', {
     status: true,
     eventName: 'TOKEN_SWAP_WIDGET_CLOSED',
     data: {
-      message: 'Token swap widget closed'
+      message: WIDGET_CLOSED
     }
   });
 }
 
-function initCloseEvents() {
+function initCloseEvents(widgetInstance) {
   const closeIcon = document.getElementById('close-icon');
   // When the user clicks on close icon (x), close the modal
   closeIcon.onclick = () => {
-    closeModal();
+    closeModal(widgetInstance);
   };
 
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = (event) => {
     const customModal = document.getElementsByClassName('custom-modal')[0];
     if (customModal && event.target.className === customModal.className) {
-      closeModal();
+      closeModal(widgetInstance);
     }
   };
 }

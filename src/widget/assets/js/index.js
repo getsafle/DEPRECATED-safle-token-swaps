@@ -1,3 +1,5 @@
+import { KYBER_SWAP_TOKEN_IMAGE_BASE_URL } from '../../../config';
+
 export function WidgetJS() {
   return `document.addEventListener('initCustomSelectDesign', function (e) {
     let tsCustomSelectElements,
@@ -39,7 +41,20 @@ export function WidgetJS() {
           create a new DIV that will act as an option item: */
         let parentOptionInnerHtml = currentTsSelect.options[j].innerHTML;
         optionItem = document.createElement('DIV');
-        optionItem.innerHTML = parentOptionInnerHtml;
+  
+        let optionItemImage = document.createElement('img');
+        optionItemImage.src =
+          '${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}' +
+          parentOptionInnerHtml.toLowerCase() +
+          '.svg';
+        optionItemImage.setAttribute('style', 'width: 25px;');
+  
+        let optionItemText = document.createElement('span');
+        optionItemText.innerHTML = parentOptionInnerHtml;
+        optionItemText.setAttribute('style', 'margin-left: 10px;');
+  
+        optionItem.appendChild(optionItemImage);
+        optionItem.appendChild(optionItemText);
   
         if (parentOptionInnerHtml == defaultSelectedValue) {
           optionItem.setAttribute('class', 'same-as-selected');
@@ -58,16 +73,20 @@ export function WidgetJS() {
             'select'
           )[0];
   
-          clickedTsSelect.value = this.innerHTML;
+          const selectedTokenSpan = this.getElementsByTagName('span')[0];
+  
+          clickedTsSelect.value = selectedTokenSpan.innerHTML;
           clickedTsSelect.onchange();
   
           clickedTsSelectOptionCount = clickedTsSelect.length;
           selectedDivElement = this.parentNode.previousSibling;
   
           for (let i = 0; i < clickedTsSelectOptionCount; i++) {
-            if (clickedTsSelect.options[i].innerHTML == this.innerHTML) {
+            if (
+              clickedTsSelect.options[i].innerHTML == selectedTokenSpan.innerHTML
+            ) {
               clickedTsSelect.selectedIndex = i;
-              selectedDivElement.innerHTML = this.innerHTML;
+              selectedDivElement.innerHTML = selectedTokenSpan.innerHTML;
               selectOptionOnDiv = this.parentNode.getElementsByClassName(
                 'same-as-selected'
               );

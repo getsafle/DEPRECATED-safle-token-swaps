@@ -1,6 +1,7 @@
 import { getWallet } from '../../../';
 
 import { CloseIcon } from '../../assets/images/close-icon';
+import { BackIcon } from '../../assets/images/back-icon';
 import { InbloxLogo } from '../../assets/images/inblox-logo';
 import { InbloxMe } from '../../assets/images/inblox-me';
 
@@ -8,11 +9,16 @@ import { Loader } from '../loaders/loader';
 import { setUserPublicAddress } from '../../utils';
 import { setSwapVia } from '../../utils/storage-and-user-helper';
 
+import { ERROR_CONNECTING_WALLET } from '../../../constants/responses';
+
 export function ConnectViaPrivateKeyModal() {
   return `<div class="custom-modal"  id="connect-via-private-key-modal">
   <div class="custom-dialog">
     ${Loader}
     <div class="content">
+      <div id="back-arrow-icon">
+        ${BackIcon}
+      </div>
       <div class="common-modal-body">
         <div class="wallet-modal">
           <div class="widget-modal-content">
@@ -21,7 +27,7 @@ export function ConnectViaPrivateKeyModal() {
                 ${InbloxLogo}
                 <h4>Connect your Wallet  <span class="via">via </span> Inblox Private Key</h4>
                 <h2>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry
+                This is not a recommended method of using Swaps.
                 </h2>
               </div>
             </div>
@@ -39,7 +45,7 @@ export function ConnectViaPrivateKeyModal() {
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
               </div>
             </div>
           </div>
@@ -60,7 +66,6 @@ export const connectWithPrivateKey = async (widgetInstance) => {
   let privateKey = document.getElementById('private-key').value;
   const privateKeyCredentials = {
     wallet: 'privateKey',
-    infuraKey: '7484a12fa3b544f79bf51ef44edd6db5',
     privateKey: privateKey
   };
 
@@ -74,11 +79,11 @@ export const connectWithPrivateKey = async (widgetInstance) => {
       widgetInstance.userAddress = res.wallet.address;
       setUserPublicAddress(res.wallet.address);
       setSwapVia('privateKey');
-      return { status: true, message: 'Got wallet address' };
+      return { status: true };
     } else {
       errorMessage.style.display = 'block';
-      errorMessage.innerHTML = 'Error connecting wallet';
-      return { status: false, message: 'Error connecting wallet' };
+      errorMessage.innerHTML = ERROR_CONNECTING_WALLET;
+      return { status: false };
     }
   });
 };

@@ -118,6 +118,23 @@
 
 * Token selector dropdown design updated
 
+### 1.1.0 (2020-02-12)
+
+##### Features updated
+
+*SDK initialisation will take place from a HTTP provider
+*Gas price calculation will be done through web3 method
+*Get wallet from private key method updated
+*Hardcoded url and error messages removed and set in constants
+*Keyless method intialisation updated
+*Back button added in Wallet selection modal
+*Added images to token selection dropdown
+*Bar loader updated to inblox.me logo loader
+*Removed redundant event listeners
+*Updated content on wallet selection screens
+*Updated keyless package version
+
+
 
 
 
