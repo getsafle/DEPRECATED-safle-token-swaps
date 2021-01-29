@@ -14,7 +14,7 @@ module.exports = {
   MAX_ALLOWANCE:
     process.env.MAX_ALLOWANCE ||
     '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-  ETHERSCAN_TRANSACTION_URL: 'https://ropsten.etherscan.io/tx',
+  ETHERSCAN_TRANSACTION_URL: 'https://etherscan.io/tx',
   KYBER_SWAP_TOKEN_IMAGE_BASE_URL:
     'https://files.kyberswap.com/DesignAssets/tokens/',
   ETHERSCAN_SERVICE_URL:
