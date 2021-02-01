@@ -285,6 +285,10 @@ class TokenSwap {
       return { srcTokenAddress, balance };
     }
 
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { ETHERSCAN_SERVICE_URL } = await HELPER.getBaseURL(network);
     const url = `${ETHERSCAN_SERVICE_URL}`;
 
     const { error, data } = await HELPER.getRequest({
