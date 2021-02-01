@@ -71,7 +71,7 @@ class TokenSwap {
       userAdd = web3.eth.accounts.privateKeyToAccount(`0x${privateKey.toString('hex')}`).address;
     }
     const refAddress = REF_ADDRESS;
-    const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
+    const gasLimit = await this.getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
     const gasPrice = await web3.eth.getGasPrice();
     let gas = gasLimit * gasPrice;
 
@@ -171,7 +171,7 @@ class TokenSwap {
         minConversionRate,
         walletId )
       .encodeABI();
-    const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
+    const gasLimit = await this.getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
 
     if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
       txReceipt = await this.broadcastTx(
