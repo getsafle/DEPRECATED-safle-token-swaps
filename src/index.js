@@ -9,12 +9,9 @@ const { keccak256 } = require('js-sha3');
 const HELPER = require('./utils/helper');
 const {
   KYBER_PROXY_CONTRACT_ADDRESS,
-  KYBER_CURRENCY_URL,
-  KYBER_GET_GAS_LIMIT_URL,
   REF_ADDRESS,
   ETH_TOKEN_ADDRESS,
   MAX_ALLOWANCE,
-  ETHERSCAN_SERVICE_URL,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
