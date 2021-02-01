@@ -8,7 +8,7 @@ module.exports = {
   ETH_TOKEN_ADDRESS: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   MAX_ALLOWANCE: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
   ETHERSCAN_TRANSACTION_URL_MAINNET: 'https://etherscan.io/tx',
-  ETHERSCAN_TRANSACTION_URL_ROPSTEN: 'https://etherscan.io/tx',
+  ETHERSCAN_TRANSACTION_URL_ROPSTEN: 'https://ropsten.etherscan.io/tx',
   KYBER_SWAP_TOKEN_IMAGE_BASE_URL: 'https://files.kyberswap.com/DesignAssets/tokens/',
   ETHERSCAN_SERVICE_URL_MAINNET: 'https://api.etherscan.io/api',
   ETHERSCAN_SERVICE_URL_ROPSTEN: 'https://api-ropsten.etherscan.io/api',
