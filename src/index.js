@@ -15,7 +15,6 @@ const {
   ETH_TOKEN_ADDRESS,
   MAX_ALLOWANCE,
   ETHERSCAN_ROPSTEN_SERVICE_URL,
-  ETHERSCAN_SECRET,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
@@ -79,10 +78,11 @@ async function getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
 }
 
 class TokenSwap {
-  constructor(rpcURL) {
+  constructor(rpcURL, etherscanSecret) {
     web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
     this.kyberProxyContractAddress = kyberProxyContractAddress;
     this.kyberProxyContractABI = kyberProxyContractABI;
+    this.etherscanSecret = etherscanSecret;
     this.kyberNetworkContract = new web3.eth.Contract(this.kyberProxyContractABI, this.kyberProxyContractAddress);
   }
 
@@ -323,7 +323,7 @@ class TokenSwap {
         contractaddress: `${srcTokenAddress}`,
         address: `${userAddress}`,
         tag: 'latest',
-        apiKey: `${ETHERSCAN_SECRET}`,
+        apiKey: `${this.etherscanSecret}`,
       },
     });
 
