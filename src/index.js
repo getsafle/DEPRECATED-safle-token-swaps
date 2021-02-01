@@ -49,19 +49,6 @@ function getSrcQty(dstQty, srcDecimals, dstDecimals, rate) {
 
   return (numerator + denominator - 1) / denominator;
 }
-// method to calculate gas limit
-async function getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
-  const { data } = await HELPER.getRequest({
-    url: `${KYBER_GET_GAS_LIMIT_URL}?source=${srcTokenAddress}&dest=${dstTokenAddress}&amount=${amount}`,
-  });
-
-  if (data) {
-    return data.data;
-  }
-
-  return { error: 'Error occured. Please try again.' };
-}
-
 class TokenSwap {
   constructor(rpcURL, etherscanSecret) {
     web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
@@ -354,6 +341,23 @@ class TokenSwap {
 
     return { error: 'Error occured. Please try again.' };
   }
+
+  // method to calculate gas limit
+  async getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { KYBER_GAS_LIMIT_URL } = await HELPER.getBaseURL(network);
+    const { data } = await HELPER.getRequest({
+      url: `${KYBER_GAS_LIMIT_URL}?source=${srcTokenAddress}&dest=${dstTokenAddress}&amount=${amount}`,
+    });
+
+    if (data) {
+      return data.data;
+    }
+
+    return { error: 'Error occured. Please try again.' };
+  }
 }
 
 async function signAndSendTransaction({
@@ -472,7 +476,6 @@ async function getWalletFromMetamask() {
 
 module.exports.getDstQty = getDstQty;
 module.exports.getSrcQty = getSrcQty;
-module.exports.getGasLimit = getGasLimit;
 module.exports.getWallet = getWallet;
 module.exports.signAndSendTransaction = signAndSendTransaction;
 module.exports.TokenSwap = TokenSwap;
