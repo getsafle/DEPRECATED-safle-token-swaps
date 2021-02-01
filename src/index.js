@@ -14,7 +14,7 @@ const {
   REF_ADDRESS,
   ETH_TOKEN_ADDRESS,
   MAX_ALLOWANCE,
-  ETHERSCAN_ROPSTEN_SERVICE_URL,
+  ETHERSCAN_SERVICE_URL,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
@@ -313,7 +313,7 @@ class TokenSwap {
       return { srcTokenAddress, balance };
     }
 
-    const url = `${ETHERSCAN_ROPSTEN_SERVICE_URL}`;
+    const url = `${ETHERSCAN_SERVICE_URL}`;
 
     const { error, data } = await HELPER.getRequest({
       url,
