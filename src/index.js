@@ -8,7 +8,7 @@ const { keccak256 } = require('js-sha3');
 
 const HELPER = require('./utils/helper');
 const {
-  kyberProxyContractAddress,
+  KYBER_PROXY_CONTRACT_ADDRESS,
   KYBER_CURRENCY_URL,
   KYBER_GET_GAS_LIMIT_URL,
   REF_ADDRESS,
@@ -80,7 +80,7 @@ async function getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
 class TokenSwap {
   constructor(rpcURL, etherscanSecret) {
     web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
-    this.kyberProxyContractAddress = kyberProxyContractAddress;
+    this.kyberProxyContractAddress = KYBER_PROXY_CONTRACT_ADDRESS;
     this.kyberProxyContractABI = kyberProxyContractABI;
     this.etherscanSecret = etherscanSecret;
     this.kyberNetworkContract = new web3.eth.Contract(this.kyberProxyContractABI, this.kyberProxyContractAddress);
@@ -124,7 +124,7 @@ class TokenSwap {
       const results = await this.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);
       const srcTokenContract = new web3.eth.Contract(erc20Contract, srcTokenAddress);
       const contractAllowance = await srcTokenContract.methods
-        .allowance(userAdd, kyberProxyContractAddress)
+        .allowance(userAdd, this.kyberProxyContractAddress)
         .call();
 
       if (srcQtyWei <= contractAllowance) {
@@ -204,7 +204,7 @@ class TokenSwap {
     if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
       txReceipt = await this.broadcastTx(
         userAdd,
-        kyberProxyContractAddress,
+        this.kyberProxyContractAddress,
         txData,
         0,
         gasLimit,
@@ -217,7 +217,7 @@ class TokenSwap {
 
     txReceipt = await this.broadcastTx(
       userAdd,
-      kyberProxyContractAddress,
+      this.kyberProxyContractAddress,
       txData,
       srcQtyWei,
       gasLimit,
@@ -269,7 +269,7 @@ class TokenSwap {
   // Function to approve KNP contract
   async approveContract(allowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet) {
     const txData = await srcTokenContract.methods
-      .approve(kyberProxyContractAddress, allowance)
+      .approve(this.kyberProxyContractAddress, allowance)
       .encodeABI();
 
     await this.broadcastTx(
