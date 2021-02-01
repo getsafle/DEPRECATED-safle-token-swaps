@@ -215,7 +215,7 @@ class TokenSwap {
       nonce: txCount,
     };
 
-    const txReceipt = await signAndSendTransaction({
+    const txReceipt = await this.signAndSendTransaction({
       wallet, pvtKey, rawTx,
     });
 
@@ -358,58 +358,67 @@ class TokenSwap {
 
     return { error: 'Error occured. Please try again.' };
   }
-}
 
-async function signAndSendTransaction({
-  wallet, pvtKey, rawTx,
-}) {
-  switch (wallet) {
-    case 'handlename': {
-      return rawTx;
-    }
-    case 'keyStore': {
-      return signViaPrivateKey(pvtKey, rawTx);
-    }
-    case 'privateKey': {
-      return signViaPrivateKey(pvtKey, rawTx);
-    }
-    default: {
-      return signViaMetamask(rawTx);
+  async signAndSendTransaction({
+    wallet, pvtKey, rawTx,
+  }) {
+    switch (wallet) {
+      case 'handlename': {
+        return rawTx;
+      }
+      case 'keyStore': {
+        return this.signViaPrivateKey(pvtKey, rawTx);
+      }
+      case 'privateKey': {
+        return this.signViaPrivateKey(pvtKey, rawTx);
+      }
+      default: {
+        return this.signViaMetamask(rawTx);
+      }
     }
   }
-}
 
-async function signViaPrivateKey(pvtKey, rawTx) {
-  const tx = new Tx(rawTx, { chain: 'ropsten', hardfork: 'petersburg' });
+  async signViaPrivateKey(pvtKey, rawTx) {
+    let network;
 
-  tx.sign(pvtKey);
-  const stringTx = `0x${tx.serialize().toString('hex')}`;
-  const txReceipt = await web3.eth.sendSignedTransaction(stringTx)
-    .catch((error) => error);
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    let tx;
 
-  return txReceipt;
-}
+    if (network === 'main') {
+      tx = new Tx(rawTx, { chain: 'mainnet' });
+    } else {
+      tx = new Tx(rawTx, { chain: network });
+    }
 
-async function signViaMetamask(rawTx) {
+    tx.sign(pvtKey);
+    const stringTx = `0x${tx.serialize().toString('hex')}`;
+    const txReceipt = await web3.eth.sendSignedTransaction(stringTx)
+      .catch((error) => error);
+
+    return txReceipt;
+  }
+
+  async signViaMetamask(rawTx) {
   // eslint-disable-next-line no-undef
-  ethereum.sendAsync(
-    {
-      method: 'eth_sendTransaction',
-      params: [ {
-        data: rawTx.data,
-        value: rawTx.value,
-        from: rawTx.from,
-        to: rawTx.to,
-      } ],
-    },
-    (err, result) => {
-      if (err) {
-        return (err);
-      }
+    ethereum.sendAsync(
+      {
+        method: 'eth_sendTransaction',
+        params: [ {
+          data: rawTx.data,
+          value: rawTx.value,
+          from: rawTx.from,
+          to: rawTx.to,
+        } ],
+      },
+      (err, result) => {
+        if (err) {
+          return (err);
+        }
 
-      return (result);
-    },
-  );
+        return (result);
+      },
+    );
+  }
 }
 
 async function getWallet({
@@ -477,6 +486,5 @@ async function getWalletFromMetamask() {
 module.exports.getDstQty = getDstQty;
 module.exports.getSrcQty = getSrcQty;
 module.exports.getWallet = getWallet;
-module.exports.signAndSendTransaction = signAndSendTransaction;
 module.exports.TokenSwap = TokenSwap;
 module.exports.Widget = Widget;
