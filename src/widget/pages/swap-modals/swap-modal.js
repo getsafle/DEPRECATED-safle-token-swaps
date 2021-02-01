@@ -1,6 +1,6 @@
 const ethers = require('ethers');
 
-import { getTokensList, getDstQty } from '../../..';
+import { getDstQty } from '../../..';
 
 import { Loader } from '../loaders/loader';
 import { CloseIcon } from '../../assets/images/close-icon';
@@ -37,7 +37,7 @@ export async function SwapModal(widgetInstance) {
 
   showModalLoader();
   // Functional called when modal is loaded.
-  await getTokensList().then(async (res) => {
+  await widgetInstance.tokenSwap.getTokensList().then(async (res) => {
     if (res.response) {
       allTokens = res.response;
       await updateSwapConfiguration(widgetInstance, allTokens[0].address);
