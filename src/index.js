@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
 const Web3 = require('web3');
@@ -19,19 +20,6 @@ const { erc20Contract } = require('./constants/ABI/erc20-contract');
 const { Widget } = require('./widget');
 
 let web3;
-
-// Method to return list of supported tokens
-async function getTokensList() {
-  const { data } = await HELPER.getRequest({
-    url: KYBER_CURRENCY_URL,
-  });
-
-  if (data) {
-    return { response: data.data };
-  }
-
-  return { error: 'Error occured. Please try again.' };
-}
 
 // method to get quantity of destination tokens
 async function getDstQty(srcQty, srcDecimals, dstDecimals, rate) {
@@ -349,6 +337,23 @@ class TokenSwap {
 
     return rate;
   }
+
+  // Method to return list of supported tokens
+  async getTokensList() {
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { KYBER_CURRENCY_URL } = await HELPER.getBaseURL(network);
+    const { data } = await HELPER.getRequest({
+      url: KYBER_CURRENCY_URL,
+    });
+
+    if (data) {
+      return { response: data.data };
+    }
+
+    return { error: 'Error occured. Please try again.' };
+  }
 }
 
 async function signAndSendTransaction({
@@ -399,7 +404,8 @@ async function signViaMetamask(rawTx) {
       }
 
       return (result);
-    });
+    },
+  );
 }
 
 async function getWallet({
@@ -464,7 +470,6 @@ async function getWalletFromMetamask() {
   return 'metamask not detected';
 }
 
-module.exports.getTokensList = getTokensList;
 module.exports.getDstQty = getDstQty;
 module.exports.getSrcQty = getSrcQty;
 module.exports.getGasLimit = getGasLimit;
