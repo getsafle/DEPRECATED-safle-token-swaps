@@ -3,28 +3,6 @@
 Inblox Token Swap SDK
 > Disclaimer - This is WIP, and release in beta.
 
-## **Token Swaps**
-
-Single transaction swaps inside the inblox identity wallet, the user just selects swap pairs and the tokens get swapped. We use aggregator model powered with [Kyber.network](http://kyber.network)'s smart contracts to provide high liquidity, and minimal fees on the swaps.
-
-All this is decentralised in nature, the user is always in control and ownership of their assets and the swap is initialised and the assets are received in the Inblox identity wallet itself.
-
-No need to hop transactions/screens to use dApps.
-
-Happy #BUIDLing
-
-
-## **Installation and Usage**
-
-> Installation
-
-Install the package by running the command,
-
-`npm install @inbloxme/inblox-token-swaps`
-
-Import the package into your project using,
-
-`const inbloxTokenSwaps = require('@inbloxme/inblox-token-swaps');`
 
 ## **Token Swap**
 
