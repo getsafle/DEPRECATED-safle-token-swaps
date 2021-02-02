@@ -1,4 +1,5 @@
-import { ETHERSCAN_TRANSACTION_URL } from '../../../config';
+import Web3 from 'web3';
+import { ETHERSCAN_TRANSACTION_URL_MAINNET, ETHERSCAN_SERVICE_URL_ROPSTEN } from '../../../config';
 
 import {
   METAMASK_CONNECTED_SUCCESSFULLY,
@@ -18,14 +19,27 @@ function swapResponseHandler(widgetInstance, response) {
     errorMessage.style.display = 'none';
     return { status: true, message: SWAP_SUCCESSFUL };
   } else {
+    web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
+
+    let network;
+    let transactionUrl;
+
+   widgetInstance.web3.eth.net.getNetworkType().then((e) => network = e);
+
+    if (network == 'main') {
+      transactionUrl = ETHERSCAN_TRANSACTION_URL_MAINNET;
+    } else if (network == 'ropsten') {
+      transactionUrl = ETHERSCAN_SERVICE_URL_ROPSTEN;
+    } 
+
     errorMessage.innerHTML = `${TRANSACTION_REVERTED_BY_EVM}
-    <a href="${ETHERSCAN_TRANSACTION_URL}/${widgetInstance.transactionHash}" target="_blank">here</a>
+    <a href="${transactionUrl}/${widgetInstance.transactionHash}" target="_blank">here</a>
     `;
     errorMessage.style.display = 'block';
     return {
       status: false,
       message: `${TRANSACTION_REVERTED_BY_EVM}
-      <a href="${ETHERSCAN_TRANSACTION_URL}/${widgetInstance.transactionHash}" target="_blank">here</a>
+      <a href="${transactionUrl}/${widgetInstance.transactionHash}" target="_blank">here</a>
       `
     };
   }
