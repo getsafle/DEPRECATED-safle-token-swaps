@@ -29,6 +29,7 @@ export class Widget {
     this.activeTab = ConnectToWalletModal();
     this.swapValues = {};
     this.response = {};
+    this.rpcURL = rpcURL;
     this.tokenSwap = new TokenSwapSDK.TokenSwap(rpcURL, etherscanSecret);
     this.keylessWidget = new Keyless.Widget({
       rpcURL,
