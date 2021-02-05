@@ -22,7 +22,4 @@ module.exports = {
     'https://files.kyberswap.com/DesignAssets/tokens/',
   ETHERSCAN_SERVICE_URL:
     process.env.ETHERSCAN_SERVICE_URL || 'https://api.etherscan.io/api',
-  ETHERSCAN_SECRET:
-    process.env.ETHERSCAN_SECRET || 'C2VBJIH1PWRNFDA2ZT1P3W26NGESGCBUAN',
-
 };
