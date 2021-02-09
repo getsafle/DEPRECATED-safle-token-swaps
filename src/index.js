@@ -420,8 +420,7 @@ class TokenSwap {
         }
 
         return (result);
-      },
-    );
+      });
   }
 }
 
