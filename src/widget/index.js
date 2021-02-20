@@ -15,7 +15,7 @@ import {
 } from './utils';
 
 export class Widget {
-  constructor({ rpcURL, env }) {
+  constructor({ rpcURL, env, etherscanSecret }) {
     const userAddress = getUserPublicAddress();
 
     this.userLoggedIn = isUserLoggedIn();
@@ -29,7 +29,8 @@ export class Widget {
     this.activeTab = ConnectToWalletModal();
     this.swapValues = {};
     this.response = {};
-    this.tokenSwap = new TokenSwapSDK.TokenSwap(rpcURL);
+    this.rpcURL = rpcURL;
+    this.tokenSwap = new TokenSwapSDK.TokenSwap(rpcURL, etherscanSecret);
     this.keylessWidget = new Keyless.Widget({
       rpcURL,
       env

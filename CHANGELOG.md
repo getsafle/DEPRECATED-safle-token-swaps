@@ -143,6 +143,16 @@
 *Keyless package update to version 1.3.1
 
 
+### 1.2.0 (2021-02-09)
+
+##### Features Updated
+
+*Keyless package update to version 1.3.4
+*Added separate base URL's for ropsten and mainnet
+*Etherscan secret removed from config and set in constructor
+*Implemented automated network selection based on rpc url provided by developer
+
+
 
 
 
