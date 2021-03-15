@@ -1,149 +1,235 @@
+# **Inblox Token Swaps**
 
-# Inbloxme Token Swaps
+Inblox Token Swap SDK
+> Disclaimer - This is WIP, and release in beta.
 
-Token Swaps SDK 
+## **Token Swaps**
 
-##  Get User Wallet
+Single transaction swaps inside the inblox identity wallet, the user just selects swap pairs and the tokens get swapped. We use aggregator model powered with [Kyber.network](http://kyber.network)'s smart contracts to provide high liquidity, and minimal fees on the swaps.
 
-> Get wallet from Inblox Handlename
+All this is decentralised in nature, the user is always in control and ownership of their assets and the swap is initialised and the assets are received in the Inblox identity wallet itself.
 
-This method is used to get the user's wallet from Inblox handlename.
+No need to hop transactions/screens to use dApps.
 
-```const wallet = await getWallet({wallet,infuraKey, userHandlename});```
-
-`wallet` - Wallet type (handlename)
-`infuraKey` - Infura API key to initialize web3.
-`userHandlename` - User's Inblox handlename.
-
-> Get wallet from Private Key
-
-This method is used to get the user's wallet from private key.
-
-```const wallet = await getWallet({wallet,infuraKey, privateKey});```
-
-`wallet` - Wallet type (privateKey)
-`infuraKey` - Infura API key to initialize web3.
-`privateKey` - User's  private key.
-
-> Get wallet from Keystore file
-
-This method is used to get the user's wallet from Keystore file.
-
-```const wallet = await getWallet({wallet, keystoreJson, passphrase});```
-
-`wallet` - Wallet type (keyStore)
-`keystoreJson` - User's keystore json.
-`passphrase` - Passphrase to unlock keystore file.
-
-> Get wallet from Metamask
-
-This method is used to get the user's wallet from Metamask.
-
-```const wallet = await getWallet({wallet});```
-
-`wallet` - Wallet type (metamask)
+Happy #BUIDLing
 
 
+## **Installation and Usage**
 
-> Get wallet from Inblox Handlename
+> Installation
 
-This method is used to get the user's wallet from Inblox handlename.
+Install the package by running the command,
 
-```const wallet = await getWallet({wallet,infuraKey, userHandlename});```
+`npm install @inbloxme/inblox-token-swaps`
 
-`wallet` - Wallet type (handlename)
-`infuraKey` - Infura API key to initialize web3.
-`userHandlename` - User's Inblox handlename.
+Import the package into your project using,
 
-> Get wallet from Private Key
+`const inbloxTokenSwaps = require('@inbloxme/inblox-token-swaps');`
 
-This method is used to get the user's wallet from private key.
+## **Token Swap**
 
-```const wallet = await getWallet({wallet,infuraKey, privateKey});```
+> Initialising
 
-`wallet` - Wallet type (privateKey)
-`infuraKey` - Infura API key to initialize web3.
-`privateKey` - User's  private key.
+Initialise the constructor using,
 
-> Get wallet from Keystore file
+`const tokenSwapWidget = new inbloxTokenSwaps.Widget({rpcURL, env, etherscanSecret});` 
 
-This method is used to get the user's wallet from Keystore file.
+* `env` - API environments (eg. dev, test) 
+* `etherscanSecret` - Etherscan secret key
+* `web3URL` - Web3 RPC provider URL
 
-```const wallet = await getWallet({wallet, keystoreJson, passphrase});```
+Serve the widget on your application by calling the `initTokenSwap` method
 
-`wallet` - Wallet type (keyStore)
-`keystoreJson` - User's keystore json.
-`passphrase` - Passphrase to unlock keystore file.
+`tokenSwapWidget.initTokenSwap();`
 
-> Get wallet from Metamask
+Widget Event Listeners
 
-This method is used to get the user's wallet from Metamask.
+> Successful widget initialization
 
-```const wallet = await getWallet({wallet});```
+`tokenSwapWidget.on(keylessWidget.EVENTS.TOKEN_SWAP_WIDGET_INITIALISED, (data) => {
+	console.log(data)
+});`
 
-`wallet` - Wallet type (metamask)
+> Widget close
+
+`tokenSwapWidget.on(keylessWidget.EVENTS.TOKEN_SWAP_WIDGET_CLOSED, (data) => {
+	console.log(data)
+});`
 
 
-## Swap Tokens
+> Transaction success
 
-This method is used to Swap tokens.
+`tokenSwapWidget.on(keylessWidget.EVENTS.TOKEN_SWAP_TRANSACTION_SUCCESSFUL, (data) => {
+	console.log(data)
+});`
 
-> Initialize constructor
 
-const swap = new TokenSwap('WsProviderUrl');
- 
+> Sign and send Transaction Failure
+
+`tokenSwapWidget.on(keylessWidget.EVENTS.TOKEN_SWAP_TRANSACTION_FAILED, (data) => {
+	console.log(data)
+});`
+
+
+## **SDK methods**
+
+
+> Initialising
+
+Initialise the constructor using,
+
+`const swap = new TokenSwap('rpcUrl', 'etherscanSecret');`
+
+
 > Swap Tokens
 
- await swap.swapTokens({ dstTokenAddress, srcTokenAddress, srcDecimal,
-    maxAllowance, srcQty, userAddress, privateKey, wallet,
-    authenticationToken,inbloxPassword});
+This method can be used to swap a given pair of tokens.
 
-`srcTokenAddress: ` Source token address
-`dstTokenAddress: ` Destination token address
-`srcDecimal`: Source token decimals
-`maxAllowance`: Kyber maximum swap allowance
-`srcQty:` Source token quantity
-`userAddress:` Public address of user
-`wallet:` Selected wallet type(metamask, handlename,keyStore, privateKey)
-`privateKey:` User Private key(only required if wallet type is private key or keystore json)
-`authenticationToken:` User bearer token(only required if wallet type is handlename)
-`inbloxPassword:` User Inblox password(only required if wallet type is handlename)
+`const tokenSwap= await swap.swapTokens({ srcTokenAddress, dstTokenAddress, srcDecimal, srcQty, privateKey, wallet, userAddress});`
 
-# Get token list
-This method is used to fetch details of all tokens supported by kyber.
- > getTokensList()
+* `srcTokenAddress` - source token contract address
+* `dstTokenAddress` - destination token contract address
+* `userAddress` - user's public address
+* `srcDecimal` - decimal of source tokens,
+* `srcQty` - source token quantity,
+* `wallet` - wallet type, (valid values: handlename, keyStore, privateKey, metamask)
+* `privateKey` - user's private key (only req. of wallet type is privateKey/keystore)
 
-# Get token details
-This method is used to fetch details of particular token.
- > getTokenDetails(tokenSymbol)
- 
-  `tokenSymbol:`Symbol of token whose details are needed
- 
-# Get source token Quantity 
-This method is used to fetch quantity of source tokens.
- > getSrcQty(dstQty, srcDecimals, dstDecimals, rate)
- 
- `dstQty:` Quantity of destination tokens
- `srcDecimals:` Source token decimals
- `dstDecimals:` Destination token decimals
- `rate:` slippage rate
- 
- # Get destination token Quantity 
-This method is used to fetch quantity of source tokens.
- > getDstQty(srcQty, srcDecimals, dstDecimals, rate)
- 
- `srcQty:` Quantity of source tokens
- `srcDecimals:` Source token decimals
- `dstDecimals:` Destination token decimals
- `rate:` slippage rate
- 
- # Get gas limit 
- This method is used to get gas limit from Kyber contract
->getGasLimit(srcTokenAddress, dstTokenAddress, amount)
 
-`srcTokenAddress: ` Source token address
-`dstTokenAddress: ` Destination token address
-`amount`: Source token amount
+> Get rates
 
- 
- 
+This method can be used to get expected and slippage rates.
+
+`const rates= await swap.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);`
+
+* `srcTokenAddress` - source token contract address
+* `dstTokenAddress` - destination token contract address
+* `srcQtyWei` - source token quantity in wei,
+
+> Convert eth to wei
+
+This method can be used to convert amount in eth to wei
+
+`const qtyInEth= await swap.convertEthToWei(srcQty);`
+
+`srcQty` - source token quantity in eth
+
+
+> Get wallet balance
+
+This method can be used to get user's ether balance
+
+`const balance = await swap.getWalletBalance(walletAddress);`
+
+`walletAddress` - user's public address
+
+
+> Get slippage percentage
+
+This method can be used get slippage percentage
+
+`const slippage= await swap.getSlippage(srcTokenAddress, dstTokenAddress, srcQty);`
+
+* `srcTokenAddress` - source token contract address
+* `dstTokenAddress` - destination token contract address
+* `srcQty` - source token quantity in eth
+
+
+
+> Get Token Balance
+
+This method can be used to  get balance of a particular token.
+
+`const tokenBalance= await swap.getTokenBalance(srcTokenAddress, userAddress);`
+
+* `srcTokenAddress` - source token contract address
+* `userAddress` - public address of user
+
+
+> Get exchange rates
+
+This method can be used to get exchange rate.
+
+`const rate= await swap.getExchangeRates(srcTokenAddress, dstTokenAddress, srcDecimal, dstDecimal)`
+
+* `srcTokenAddress` - source token contract address
+* `dstTokenAddress` - destination token contract address
+* `srcDecimals` - decimals of source token
+* `dstDecimals` - decimals of destination token
+
+
+> Sign and send transaction
+
+This method can be used to sign and send a transaction
+
+`const transaction= await swap.signAndSendTransaction({ wallet, rawTx });`
+
+* `wallet` - wallet type, (valid values: handlename, keyStore, privateKey, metamask)
+* `rawTx` - raw transaction
+
+
+> Get tokens list
+
+This method can be used to get list of supported tokens.
+
+`const tokenList= await swaps.getTokensList()`
+
+
+> Get gas limit
+
+This method can be used to get gas limit for swap transaction
+
+`const gasLimit= await swaps.getGasLimit(srcTokenAddress, dstTokenAddress, amount);`
+
+* `srcTokenAddress` - source token contract address
+* `dstTokenAddress` - destination token contract address
+* `amount` - source token amount
+
+
+## **Helper methods**
+
+> Get destination quantity
+
+This method can be used to get the destination quantity.
+
+`const destQty= await inbloxTokenSwaps.getDstQty(srcQty, srcDecimals, dstDecimals, rate);`
+
+* `srcQty` - number of source tokens to be swapped
+* `srcDecimals` - decimals of source token
+* `dstDecimals` - decimals of source token
+* `rate` - exchange rate
+
+
+> Get source quantity
+
+This method can be used to get the source quantity.
+
+`srcQty= await inbloxTokenSwaps.getSrcQty(dstQty, srcDecimals, dstDecimals, rate);`
+
+* `dstQty` - number of source tokens to be swapped
+* `srcDecimals` - decimals of source token
+* `dstDecimals` - decimals of source token
+* `rate` - exchange rate
+
+
+> Get wallet
+
+This method can be used to get user's wallet details.
+
+`const wallet= await inbloxTokenSwaps.getWallet({ wallet, infuraKey, keystoreJson, passphrase, privateKey});`
+
+* `wallet` - wallet type, (valid values: keyStore, privateKey, metamask)
+* `infuraKey` - infura key (only req. if wallet type is privateKey),
+* `keystoreJson` - user's wallet encrypted JSON(only req. if wallet type is keyStore),
+* `passphrase` - password to decrypt keystore json(only req. if wallet type is keyStore)
+* `privateKey` - user's private key(only req. if wallet type is privateKey),
+
+
+
+## **WIP**
+
+Want to contribute, we would ❤️ that!
+
+We are a Global 🌏🌍🌎 team! 💪
+
+Write to [dev@inblox.me](mailto:dev@inblox.me), or follow us on twitter, [https://twitter.com/inblox_me](https://twitter.com/inblox_me)

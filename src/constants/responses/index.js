@@ -12,5 +12,6 @@ module.exports = {
   ENTER_PRIVATE_KEY: 'Enter private key to proceed swapping.',
   ENTER_PASS_PHRASE: 'Enter pass phrase to proceed swapping.',
   WIDGET_CLOSED: 'Token swap widget closed',
-  ERROR_CONNECTING_WALLET: 'Error connecting wallet'
+  ERROR_CONNECTING_WALLET: 'Error connecting wallet',
+  INVALID_NETWORK: 'Invalid network selected.',
 };

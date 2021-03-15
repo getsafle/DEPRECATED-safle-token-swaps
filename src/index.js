@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
 const Web3 = require('web3');
@@ -8,14 +9,10 @@ const { keccak256 } = require('js-sha3');
 
 const HELPER = require('./utils/helper');
 const {
-  kyberProxyContractAddress,
-  KYBER_CURRENCY_URL,
-  KYBER_GET_GAS_LIMIT_URL,
+  KYBER_PROXY_CONTRACT_ADDRESS,
   REF_ADDRESS,
   ETH_TOKEN_ADDRESS,
   MAX_ALLOWANCE,
-  ETHERSCAN_ROPSTEN_SERVICE_URL,
-  ETHERSCAN_SECRET,
 } = require('./config');
 const { kyberProxyContractABI } = require('./constants/ABI/kyber-proxy-contract');
 const { erc20Contract } = require('./constants/ABI/erc20-contract');
@@ -23,19 +20,6 @@ const { erc20Contract } = require('./constants/ABI/erc20-contract');
 const { Widget } = require('./widget');
 
 let web3;
-
-// Method to return list of supported tokens
-async function getTokensList() {
-  const { data } = await HELPER.getRequest({
-    url: KYBER_CURRENCY_URL,
-  });
-
-  if (data) {
-    return { response: data.data };
-  }
-
-  return { error: 'Error occured. Please try again.' };
-}
 
 // method to get quantity of destination tokens
 async function getDstQty(srcQty, srcDecimals, dstDecimals, rate) {
@@ -65,24 +49,12 @@ function getSrcQty(dstQty, srcDecimals, dstDecimals, rate) {
 
   return (numerator + denominator - 1) / denominator;
 }
-// method to calculate gas limit
-async function getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
-  const { data } = await HELPER.getRequest({
-    url: `${KYBER_GET_GAS_LIMIT_URL}?source=${srcTokenAddress}&dest=${dstTokenAddress}&amount=${amount}`,
-  });
-
-  if (data) {
-    return data.data;
-  }
-
-  return { error: 'Error occured. Please try again.' };
-}
-
 class TokenSwap {
-  constructor(rpcURL) {
+  constructor(rpcURL, etherscanSecret) {
     web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
-    this.kyberProxyContractAddress = kyberProxyContractAddress;
+    this.kyberProxyContractAddress = KYBER_PROXY_CONTRACT_ADDRESS;
     this.kyberProxyContractABI = kyberProxyContractABI;
+    this.etherscanSecret = etherscanSecret;
     this.kyberNetworkContract = new web3.eth.Contract(this.kyberProxyContractABI, this.kyberProxyContractAddress);
   }
 
@@ -99,7 +71,7 @@ class TokenSwap {
       userAdd = web3.eth.accounts.privateKeyToAccount(`0x${privateKey.toString('hex')}`).address;
     }
     const refAddress = REF_ADDRESS;
-    const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
+    const gasLimit = await this.getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
     const gasPrice = await web3.eth.getGasPrice();
     let gas = gasLimit * gasPrice;
 
@@ -124,7 +96,7 @@ class TokenSwap {
       const results = await this.getRates(srcTokenAddress, dstTokenAddress, srcQtyWei);
       const srcTokenContract = new web3.eth.Contract(erc20Contract, srcTokenAddress);
       const contractAllowance = await srcTokenContract.methods
-        .allowance(userAdd, kyberProxyContractAddress)
+        .allowance(userAdd, this.kyberProxyContractAddress)
         .call();
 
       if (srcQtyWei <= contractAllowance) {
@@ -199,12 +171,12 @@ class TokenSwap {
         minConversionRate,
         walletId )
       .encodeABI();
-    const gasLimit = await getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
+    const gasLimit = await this.getGasLimit(srcTokenAddress, dstTokenAddress, srcQty);
 
     if (srcTokenAddress !== ETH_TOKEN_ADDRESS) {
       txReceipt = await this.broadcastTx(
         userAdd,
-        kyberProxyContractAddress,
+        this.kyberProxyContractAddress,
         txData,
         0,
         gasLimit,
@@ -217,7 +189,7 @@ class TokenSwap {
 
     txReceipt = await this.broadcastTx(
       userAdd,
-      kyberProxyContractAddress,
+      this.kyberProxyContractAddress,
       txData,
       srcQtyWei,
       gasLimit,
@@ -243,7 +215,7 @@ class TokenSwap {
       nonce: txCount,
     };
 
-    const txReceipt = await signAndSendTransaction({
+    const txReceipt = await this.signAndSendTransaction({
       wallet, pvtKey, rawTx,
     });
 
@@ -269,7 +241,7 @@ class TokenSwap {
   // Function to approve KNP contract
   async approveContract(allowance, userAdd, srcTokenAddress, srcTokenContract, pvtKey, wallet) {
     const txData = await srcTokenContract.methods
-      .approve(kyberProxyContractAddress, allowance)
+      .approve(this.kyberProxyContractAddress, allowance)
       .encodeABI();
 
     await this.broadcastTx(
@@ -313,7 +285,11 @@ class TokenSwap {
       return { srcTokenAddress, balance };
     }
 
-    const url = `${ETHERSCAN_ROPSTEN_SERVICE_URL}`;
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { ETHERSCAN_SERVICE_URL } = await HELPER.getBaseURL(network);
+    const url = `${ETHERSCAN_SERVICE_URL}`;
 
     const { error, data } = await HELPER.getRequest({
       url,
@@ -323,7 +299,7 @@ class TokenSwap {
         contractaddress: `${srcTokenAddress}`,
         address: `${userAddress}`,
         tag: 'latest',
-        apiKey: `${ETHERSCAN_SECRET}`,
+        apiKey: `${this.etherscanSecret}`,
       },
     });
 
@@ -352,57 +328,100 @@ class TokenSwap {
 
     return rate;
   }
-}
 
-async function signAndSendTransaction({
-  wallet, pvtKey, rawTx,
-}) {
-  switch (wallet) {
-    case 'handlename': {
-      return rawTx;
+  // Method to return list of supported tokens
+  async getTokensList() {
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { KYBER_CURRENCY_URL } = await HELPER.getBaseURL(network);
+    const { data } = await HELPER.getRequest({
+      url: KYBER_CURRENCY_URL,
+    });
+
+    if (data) {
+      return { response: data.data };
     }
-    case 'keyStore': {
-      return signViaPrivateKey(pvtKey, rawTx);
+
+    return { error: 'Error occured. Please try again.' };
+  }
+
+  // method to calculate gas limit
+  async getGasLimit(srcTokenAddress, dstTokenAddress, amount) {
+    let network;
+
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    const { KYBER_GAS_LIMIT_URL } = await HELPER.getBaseURL(network);
+    const { data } = await HELPER.getRequest({
+      url: `${KYBER_GAS_LIMIT_URL}?source=${srcTokenAddress}&dest=${dstTokenAddress}&amount=${amount}`,
+    });
+
+    if (data) {
+      return data.data;
     }
-    case 'privateKey': {
-      return signViaPrivateKey(pvtKey, rawTx);
-    }
-    default: {
-      return signViaMetamask(rawTx);
+
+    return { error: 'Error occured. Please try again.' };
+  }
+
+  async signAndSendTransaction({
+    wallet, pvtKey, rawTx,
+  }) {
+    switch (wallet) {
+      case 'handlename': {
+        return rawTx;
+      }
+      case 'keyStore': {
+        return this.signViaPrivateKey(pvtKey, rawTx);
+      }
+      case 'privateKey': {
+        return this.signViaPrivateKey(pvtKey, rawTx);
+      }
+      default: {
+        return this.signViaMetamask(rawTx);
+      }
     }
   }
-}
 
-async function signViaPrivateKey(pvtKey, rawTx) {
-  const tx = new Tx(rawTx, { chain: 'ropsten', hardfork: 'petersburg' });
+  async signViaPrivateKey(pvtKey, rawTx) {
+    let network;
 
-  tx.sign(pvtKey);
-  const stringTx = `0x${tx.serialize().toString('hex')}`;
-  const txReceipt = await web3.eth.sendSignedTransaction(stringTx)
-    .catch((error) => error);
+    await web3.eth.net.getNetworkType().then((e) => network = e);
+    let tx;
 
-  return txReceipt;
-}
+    if (network === 'main') {
+      tx = new Tx(rawTx, { chain: 'mainnet' });
+    } else {
+      tx = new Tx(rawTx, { chain: network });
+    }
 
-async function signViaMetamask(rawTx) {
+    tx.sign(pvtKey);
+    const stringTx = `0x${tx.serialize().toString('hex')}`;
+    const txReceipt = await web3.eth.sendSignedTransaction(stringTx)
+      .catch((error) => error);
+
+    return txReceipt;
+  }
+
+  async signViaMetamask(rawTx) {
   // eslint-disable-next-line no-undef
-  ethereum.sendAsync(
-    {
-      method: 'eth_sendTransaction',
-      params: [ {
-        data: rawTx.data,
-        value: rawTx.value,
-        from: rawTx.from,
-        to: rawTx.to,
-      } ],
-    },
-    (err, result) => {
-      if (err) {
-        return (err);
-      }
+    ethereum.sendAsync(
+      {
+        method: 'eth_sendTransaction',
+        params: [ {
+          data: rawTx.data,
+          value: rawTx.value,
+          from: rawTx.from,
+          to: rawTx.to,
+        } ],
+      },
+      (err, result) => {
+        if (err) {
+          return (err);
+        }
 
-      return (result);
-    });
+        return (result);
+      });
+  }
 }
 
 async function getWallet({
@@ -467,11 +486,8 @@ async function getWalletFromMetamask() {
   return 'metamask not detected';
 }
 
-module.exports.getTokensList = getTokensList;
 module.exports.getDstQty = getDstQty;
 module.exports.getSrcQty = getSrcQty;
-module.exports.getGasLimit = getGasLimit;
 module.exports.getWallet = getWallet;
-module.exports.signAndSendTransaction = signAndSendTransaction;
 module.exports.TokenSwap = TokenSwap;
 module.exports.Widget = Widget;
