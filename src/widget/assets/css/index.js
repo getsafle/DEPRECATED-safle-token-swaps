@@ -1,28 +1,28 @@
 export function WidgetCSS() {
-  return `body {
+  return `#safleTokenSwapWidget {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 300;
     margin: 0px;
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  #safleTokenSwapWidget h1,
+  #safleTokenSwapWidget h2,
+  #safleTokenSwapWidget h3,
+  #safleTokenSwapWidget h4,
+  #safleTokenSwapWidget h5,
+  #safleTokenSwapWidget h6 {
     margin: 0px;
     color: #2e2e2f;
     font-weight: 400;
   }
   
-  p {
+  #safleTokenSwapWidget p {
     margin: 0px;
   }
-  input {
+  #safleTokenSwapWidget input {
     outline: 0;
   }
   .blue-btn {
-    background-image: linear-gradient(to right, #12bde2, #0669f8);
+    /*background-image: linear-gradient(to right, #12bde2, #0669f8);
     text-align: center;
     color: #fff;
     padding: 10px 0px;
@@ -32,7 +32,25 @@ export function WidgetCSS() {
     text-decoration: none !important;
     cursor: pointer;
     border: none;
-    font-size: 16px;
+    font-size: 16px;*/
+
+    outline: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 1rem 3rem;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2.5rem;
+    min-width: 15rem;
+    background-color: #0669F8;
+    border: 0px;
+    transition: all 250ms ease-in-out;
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
   }
   .blue-btn:disabled {
     background-color: #6484b9;
@@ -43,23 +61,31 @@ export function WidgetCSS() {
     background-color: #6484b9;
   }
   .blue-btn:hover {
+    /*color: #fff;
+    background-color: #0a367d;*/
     color: #fff;
-    background-color: #0a367d;
+    background-color: #12BDE2;
+    opacity: 0.6;
   }
   .blue-btn:active {
     color: #fff;
-    background-color: #0a367d;
+    background-color: #0669F8;
   }
   .blue-btn:focus {
     color: #fff;
-    background-color: #0a367d;
+    background-color: #0669F8;
+  }
+  .btn-centered {
+    margin-left: auto;
+    margin-right: auto;
   }
   
   /* Widget Modal */
   .custom-modal {
     background: rgba(0, 0, 0, 0.6);
     position: fixed;
-    top: 0px;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     z-index: 9999;
@@ -81,6 +107,10 @@ export function WidgetCSS() {
   .wallet-modal .wallet-head {
     margin: 0px auto;
     text-align: center;
+  }
+  .wallet-modal .wallet-head svg {
+    width: 100px;
+    height: 100px;
   }
   .wallet-modal .wallet-head h4 .via {
     display: block;
@@ -126,6 +156,9 @@ export function WidgetCSS() {
     padding-bottom: 20px;
     margin-bottom: 0px;
   }
+  #safleTokenSwapWidget .wallet-form .custom-input label {
+    padding-bottom: 0;
+  }
   .wallet-form .custom-input {
     position: relative;
     margin-bottom: 20px;
@@ -134,7 +167,7 @@ export function WidgetCSS() {
     text-align: left;
   }
   .wallet-form .custom-input input {
-    width: 100%;
+    /*width: 100%;
     text-align: right;
     padding: 14px 20px;
     background: #f4f4f4;
@@ -142,7 +175,28 @@ export function WidgetCSS() {
     border: none;
     color: #6f6f6f;
     font-size: 16px;
-    height: 20px;
+    height: 20px;*/
+
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+    opacity: 1;
+    line-height: 1.2;
+    padding: 1.3rem 1rem;
+    box-sizing: border-box;
+    z-index: 35;
+    max-width: 100%;
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e4e5e6;
+    outline: none;
+  }
+  .wallet-form.custom-form .custom-input input {
+    padding: 1.2rem 1rem;
+  }
+  .wallet-form .custom-input input.swap-input {
+    text-align: right;
   }
   .wallet-form .upload-key-store {
     padding: 25px;
@@ -162,14 +216,16 @@ export function WidgetCSS() {
   }
   .wallet-form .upload-key-store label {
     margin-top: 10px;
-    display: inline-block;
+    display: block;
     color: #3974d4;
     text-decoration: underline;
     cursor: pointer;
+    margin: 0 auto;
   }
   .wallet-form .custom-input p {
     color: #a0a0a0;
     font-size: 12px;
+    line-height: 28px;
     text-align: right;
   }
   .wallet-form .custom-input p span {
@@ -191,10 +247,13 @@ export function WidgetCSS() {
     vertical-align: sub;
     margin-right: 5px;
   }
+  .wallet-form .button-section .blue-btn {
+    margin-bottom: 0.5rem;
+  }
   .custom-input .custom-drop {
     position: absolute;
-    top: 43px;
-    left: 30px;
+    top: 29px;
+    left: 10px;
   }
   .custom-input select {
     color: #2e2e2f;
@@ -259,12 +318,15 @@ export function WidgetCSS() {
   .wallet-form .notes label {
     color: #2e2e2f;
     font-size: 10px;
+    height: 25px;
+    line-height: 25px;
   }
   .wallet-form .notes label a {
     color: #1f4788;
     text-decoration: none;
     font-weight: 600;
     vertical-align: middle;
+    height: 25px;
   }
   .wallet-form .notes label a svg {
     width: 60px;
@@ -325,7 +387,7 @@ export function WidgetCSS() {
     color: #fff;
   }
   .wallet-form.custom-form .custom-input input {
-    width: 91%;
+    // width: 91%;
   }
   
   /* modal */
@@ -505,7 +567,7 @@ export function WidgetCSS() {
   #loader {
     display: none;
   }
-  .inblox-loader {
+  .safle-loader {
     background-color: #a09e9ee3;
     position: absolute;
     height: 100%;
@@ -531,6 +593,23 @@ export function WidgetCSS() {
   
   .loader-container img {
     width: 80%;
+  }
+
+  .loader-container svg {
+    width: 80%;
+    transform: scale(1);
+    animation: beat 1.4s 0s linear infinite;
+  }
+  @keyframes beat {
+    0% {
+      transform: scale(1)
+    }
+    50% {
+      transform: scale(1.15)
+    }
+    100% {
+      transform: scale(1)
+    }
   }
   
   @media only screen and (max-width: 767px) {
@@ -582,6 +661,10 @@ export function WidgetCSS() {
     #change-wallet span {
       padding-left: 53%;
     }
+
+    .ts-custom-select {
+      margin-top: 13px;
+    }
   }
   
   @media only screen and (max-width: 320px) {
@@ -597,6 +680,13 @@ export function WidgetCSS() {
     .wallet-form .upload-key-store {
       padding: 10px;
       margin-bottom: 10px;
+    }
+  }
+
+  @media only screen and (max-height: 700px) {
+    .wallet-modal .wallet-head svg {
+      width: 70px;
+      height: 70px;
     }
   }`;
 }

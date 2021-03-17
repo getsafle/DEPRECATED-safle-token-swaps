@@ -14,7 +14,7 @@ import { connectWithMetaMask } from '../pages/connect-to-wallet-modal/meta-mask'
 import { connectWithPrivateKey } from '../pages/connect-to-wallet-modal/private-key';
 import { connectWithKeyStore } from '../pages/connect-to-wallet-modal/pass-phrase';
 import {
-  swapTokenUsingInbloxHandleName,
+  swapTokenUsingSafleId,
   swapTokenUsingPrivateKey,
   swapTokenUsingMetaMask
 } from '../pages/swap-modals/swap-via-helper';
@@ -51,11 +51,11 @@ function initialiseKeylessWidget(widgetInstance) {
     widgetInstance.keylessWidget.EVENTS.LOGIN_SUCCESS,
     (widgetData) => {
       if (widgetData.status) {
-        widgetInstance.handleName = widgetData.data.handleName;
+        widgetInstance.safleId = widgetData.data.safleId;
         widgetInstance.userAddress = widgetData.data.publicAddress;
         widgetInstance.userLoggedIn = true;
         setUserPublicAddress(widgetData.data.publicAddress);
-        setSwapVia('handlename');
+        setSwapVia('safleId');
       }
     }
   );
@@ -140,8 +140,8 @@ function signAndSendTransactionUsingKeyless(widgetInstance, rawTransaction) {
 
 async function swapTokensBasedOnWalletSelected(widgetInstance) {
   switch (widgetInstance.swapVia) {
-    case 'handlename':
-      const rawTransactionDetails = await swapTokenUsingInbloxHandleName(
+    case 'safleId':
+      const rawTransactionDetails = await swapTokenUsingSafleId(
         widgetInstance
       );
 
@@ -318,7 +318,7 @@ export function initOnClickEvents(widgetInstance) {
         'connect-via-handle-name-modal'
       );
       connectViaHanleName.onclick = () => {
-        widgetInstance.swapVia = 'handlename';
+        widgetInstance.swapVia = 'safleId';
         closeModal(widgetInstance);
         initialiseKeylessWidget(widgetInstance);
       };

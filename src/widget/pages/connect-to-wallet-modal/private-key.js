@@ -2,8 +2,8 @@ import { getWallet } from '../../../';
 
 import { CloseIcon } from '../../assets/images/close-icon';
 import { BackIcon } from '../../assets/images/back-icon';
-import { InbloxLogo } from '../../assets/images/inblox-logo';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 import { setUserPublicAddress } from '../../utils';
@@ -24,8 +24,8 @@ export function ConnectViaPrivateKeyModal() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
-                <h4>Connect your Wallet  <span class="via">via </span> Inblox Private Key</h4>
+                ${SafleFavicon}
+                <h4>Connect your Wallet  <span class="via">via </span>Private Key</h4>
                 <h2>
                 This is not a recommended method of using Swaps.
                 </h2>
@@ -40,12 +40,12 @@ export function ConnectViaPrivateKeyModal() {
                 <label id="error-message"></label>
               </div>
               <div class="button-section">
-                <button class="blue-btn" id="connect-with-private-key-button">
+                <button class="blue-btn btn-centered" id="connect-with-private-key-button">
                   Connect
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com" target="_blank">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

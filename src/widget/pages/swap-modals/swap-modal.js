@@ -74,7 +74,7 @@ export async function SwapModal(widgetInstance) {
             <div class="wallet-form custom-form">
               <div class="custom-input">
                 <label>From</label>
-                <input type="number" id="source-quantity" autocomplete="off" value="${sourceQuantity}" placeholder="0" >
+                <input type="number" class="swap-input" id="source-quantity" autocomplete="off" value="${sourceQuantity}" placeholder="0" >
                 <div class="custom-drop ts-custom-select">
                   <span class="align-bottom">
                     <img src="${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${sourceSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="source-token-symbol-image">
@@ -92,7 +92,7 @@ export async function SwapModal(widgetInstance) {
               </div>
               <div class="custom-input">
                 <label>To</label>
-                <input type="number" id="destination-quantity" autocomplete="off" value="${destinationQuantity}" placeholder="0">
+                <input type="number" class="swap-input" id="destination-quantity" autocomplete="off" value="${destinationQuantity}" placeholder="0">
                 <div class="custom-drop ts-custom-select">
                   <span class="green align-bottom">
                   <img src="${KYBER_SWAP_TOKEN_IMAGE_BASE_URL}/${destinationSymbol.toLowerCase()}.svg" alt="token-symbol" class="token-symbol-image" id="destination-token-symbol-image">
@@ -110,10 +110,10 @@ export async function SwapModal(widgetInstance) {
                 <label id="error-message"></label>
               </div>
               <div class="button-section">
-                <button id="swap-now-button" class="blue-btn" disabled>Swap Now</button>
+                <button id="swap-now-button" class="blue-btn btn-centered" disabled>Swap Now</button>
               </div>
               <div class="notes">
-                <p>By Transfering, you agree to the <a href="https://inblox.me/tncH" target="_blank">Terms and Conditions</a></p>
+                <p>By Transfering, you agree to the <a href="https://getsafle.co/terms-and-conditions" target="_blank">Terms and Conditions</a></p>
                 <label>${PoweredByKyber}</label>
               </div>
             </div>

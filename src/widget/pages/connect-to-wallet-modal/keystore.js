@@ -2,9 +2,9 @@ import { getWallet } from '../../../';
 
 import { CloseIcon } from '../../assets/images/close-icon';
 import { BackIcon } from '../../assets/images/back-icon';
-import { InbloxLogo } from '../../assets/images/inblox-logo';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
 import { UploadIcon } from '../../assets/images/upload-icon';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 
@@ -21,7 +21,7 @@ export function ConnectViaKeyStoreModal() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
+                ${SafleFavicon}
                 <h4>Connect your Wallet <span class="via">via </span>KeyStore File</h4>
                 <h2>
                 This is not a recommended method of using Swaps.
@@ -49,12 +49,12 @@ export function ConnectViaKeyStoreModal() {
                 <span>Uploaded</span>
               </div>
               <div class="button-section">
-                <button class="blue-btn" id="connect-with-keystore-button">
+                <button class="blue-btn btn-centered" id="connect-with-keystore-button">
                   Upload
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com" target="_blank">${SafleLogo}</a></label>
               </div>
             </div>
           </div>
