@@ -1,6 +1,6 @@
-import { InbloxLogo } from '../../assets/images/inblox-logo';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
 import { CloseIcon } from '../../assets/images/close-icon';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 export function CheckWithMetaMaskModal() {
   return `<div class="custom-modal" id="check-with-meta-mask-modal">
@@ -11,7 +11,7 @@ export function CheckWithMetaMaskModal() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
+                ${SafleFavicon}
                 <h4>Check Transaction <span class="via">with </span> Meta Mask</h4>
                 <h2>
                 Please check your Metamask to continue the transaction.
@@ -20,12 +20,12 @@ export function CheckWithMetaMaskModal() {
             </div>
             <div class="wallet-form custom-form handle">
               <div class="button-section">
-                <button class="blue-btn" id="check-with-meta-mask-button">
+                <button class="blue-btn btn-centered" id="check-with-meta-mask-button">
                   Ok
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

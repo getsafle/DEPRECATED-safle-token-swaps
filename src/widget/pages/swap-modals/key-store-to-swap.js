@@ -1,7 +1,7 @@
 import { CloseIcon } from '../../assets/images/close-icon';
-import { InbloxLogo } from '../../assets/images/inblox-logo';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
 import { UploadIcon } from '../../assets/images/upload-icon';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 
@@ -15,8 +15,8 @@ export function KeyStoreToSwap() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
-                <h4>Inblox Key Store</h4>
+                ${SafleFavicon}
+                <h4>Safle Key Store</h4>
                 <h2>
                   Upload your keystore file.
                 </h2>
@@ -43,12 +43,12 @@ export function KeyStoreToSwap() {
                 <span>Uploaded</span>
               </div>
               <div class="button-section">
-                <button class="blue-btn" id="keystore-to-swap-button">
+                <button class="blue-btn btn-centered" id="keystore-to-swap-button">
                   Upload
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

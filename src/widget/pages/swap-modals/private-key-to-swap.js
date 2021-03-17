@@ -1,6 +1,6 @@
 import { CloseIcon } from '../../assets/images/close-icon';
-import { InbloxLogo } from '../../assets/images/inblox-logo';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 
@@ -14,8 +14,8 @@ export function PrivateKeyToSwap() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
-                <h4>Inblox Private Key</h4>
+                ${SafleFavicon}
+                <h4>Safle Private Key</h4>
                 <h2>
                   Type your private key to proceed swapping.
                 </h2>
@@ -30,12 +30,12 @@ export function PrivateKeyToSwap() {
                 <label id="error-message"></label>
               </div>
               <div class="button-section">
-                <button class="blue-btn" id="proceed-swapping">
+                <button class="blue-btn btn-centered" id="proceed-swapping">
                   Proceed
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

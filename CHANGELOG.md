@@ -154,5 +154,10 @@
 
 
 
+### 1.3.0 (2021-03-17)
 
+##### Rebranding from Inblox to Safle.
+
+*Updated all the instances of Inblox to Safle.
+*Updated the widget logo and color schemes as per the new brand guidelines.
 

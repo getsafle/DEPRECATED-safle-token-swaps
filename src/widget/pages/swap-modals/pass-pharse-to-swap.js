@@ -1,8 +1,8 @@
 import { getWallet } from '../../..';
 
 import { CloseIcon } from '../../assets/images/close-icon';
-import { InbloxLogo } from '../../assets/images/inblox-logo';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 
@@ -16,8 +16,8 @@ export function PassPhraseToSwap() {
           <div class="widget-modal-content">
             <div class="wallet-head">
               <div class="image">
-                ${InbloxLogo}
-                <h4>Inblox Key Store</h4>
+                ${SafleFavicon}
+                <h4>Safle Key Store</h4>
                 <h2>
                   Enter pass phrase for uploaded keystore.
                 </h2>
@@ -32,12 +32,12 @@ export function PassPhraseToSwap() {
                 <label id="error-message"></label>
               </div>
               <div class="button-section">
-                <button class="blue-btn" id="pass-phrase-to-swap-button">
+                <button class="blue-btn btn-centered" id="pass-phrase-to-swap-button">
                   Connect
                 </button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

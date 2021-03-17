@@ -313,8 +313,8 @@ class TokenSwap {
     return { srcTokenAddress, balance };
   }
 
-  // Method to sign transaction via inblox keyless
-  async signViaInblox(signedTx) {
+  // Method to sign transaction via safle keyless
+  async signViaSafle(signedTx) {
     const txReceipt = await web3.eth.sendSignedTransaction(signedTx)
       .catch((error) => error);
 
@@ -367,7 +367,7 @@ class TokenSwap {
     wallet, pvtKey, rawTx,
   }) {
     switch (wallet) {
-      case 'handlename': {
+      case 'safleId': {
         return rawTx;
       }
       case 'keyStore': {

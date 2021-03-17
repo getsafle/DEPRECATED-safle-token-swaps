@@ -20,7 +20,7 @@ export class Widget {
 
     this.userLoggedIn = isUserLoggedIn();
     this.swapVia = '';
-    this.handleName = '';
+    this.safleId = '';
     this.userAddress = userAddress != null ? userAddress : '';
     this.privateKey = '';
     this.encryptedJson = '';

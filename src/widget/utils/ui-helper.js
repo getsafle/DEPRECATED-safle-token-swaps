@@ -23,10 +23,10 @@ import { getUserPublicAddress, getSwapVia } from './storage-and-user-helper';
 import { WIDGET_CLOSED } from '../../constants/responses';
 
 export async function generateModal(widgetInstance) {
-  let wrapper = document.getElementById('inbloxTokenSwapWidget');
+  let wrapper = document.getElementById('safleTokenSwapWidget');
   if (wrapper == null) {
     wrapper = document.createElement('div');
-    wrapper.id = 'inbloxTokenSwapWidget';
+    wrapper.id = 'safleTokenSwapWidget';
   }
   wrapper.innerHTML = `${widgetInstance.activeTab}`;
 
@@ -35,7 +35,7 @@ export async function generateModal(widgetInstance) {
   if (!container) container = document.getElementsByTagName('div');
   await container[0].appendChild(wrapper);
 
-  let inbloxTokenSwapWidget = document.getElementById('inbloxTokenSwapWidget');
+  let safleTokenSwapWidget = document.getElementById('safleTokenSwapWidget');
 
   let style = await document.createElement('style');
   style.innerHTML = WidgetCSS();
@@ -43,17 +43,17 @@ export async function generateModal(widgetInstance) {
   let script = await document.createElement('script');
   script.innerHTML = WidgetJS();
 
-  if (inbloxTokenSwapWidget) {
-    await inbloxTokenSwapWidget.appendChild(style);
-    await inbloxTokenSwapWidget.appendChild(script);
+  if (safleTokenSwapWidget) {
+    await safleTokenSwapWidget.appendChild(style);
+    await safleTokenSwapWidget.appendChild(script);
   }
 
   //Prevent background scrolling when overlay appears
   document.documentElement.style.overflow = 'hidden';
   document.body.scroll = 'no';
 
-  if (inbloxTokenSwapWidget && inbloxTokenSwapWidget.style) {
-    inbloxTokenSwapWidget.style.display = 'block';
+  if (safleTokenSwapWidget && safleTokenSwapWidget.style) {
+    safleTokenSwapWidget.style.display = 'block';
   }
 
   if (!widgetInstance.isInitialised) {
@@ -121,7 +121,7 @@ export function closeModal(widgetInstance) {
   //Enable background scrolling when overlay removed
   document.documentElement.style.overflow = 'auto';
   document.body.scroll = 'yes';
-  document.getElementById('inbloxTokenSwapWidget').remove();
+  document.getElementById('safleTokenSwapWidget').remove();
 
   widgetInstance.eventEmitter.emit('TOKEN_SWAP_WIDGET_CLOSED', {
     status: true,

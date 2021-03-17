@@ -1,6 +1,6 @@
 import { CloseIcon } from '../../assets/images/close-icon';
 import { GreenTick } from '../../assets/images/green-tick';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 export function SuccessModal(widgetInstance) {
   const swapValues = widgetInstance.swapValues;
@@ -21,10 +21,10 @@ export function SuccessModal(widgetInstance) {
             </div>
             <div class="wallet-form">
               <div class="button-section">
-                <button id="swap-more-button" class="blue-btn">Swap More</button>
+                <button id="swap-more-button" class="blue-btn btn-centered">Swap More</button>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com">${SafleLogo}</a></label>
               </div>
             </div>
           </div>

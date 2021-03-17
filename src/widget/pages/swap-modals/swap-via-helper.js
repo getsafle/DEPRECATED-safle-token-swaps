@@ -45,10 +45,10 @@ function swapResponseHandler(widgetInstance, response) {
   }
 }
 
-export const swapTokenUsingInbloxHandleName = async (widgetInstance) => {
+export const swapTokenUsingSafleId = async (widgetInstance) => {
   const swapValues = widgetInstance.swapValues;
   const userAddress = widgetInstance.userAddress;
-  const handleName = widgetInstance.handleName;
+  const safleId = widgetInstance.safleId;
   const swapVia = widgetInstance.swapVia;
 
   const swapCredentials = {
@@ -57,7 +57,7 @@ export const swapTokenUsingInbloxHandleName = async (widgetInstance) => {
     srcDecimal: swapValues.srcDecimal,
     srcQty: swapValues.srcQty,
     userAddress: userAddress,
-    userName: handleName,
+    userName: safleId,
     wallet: swapVia
   };
 

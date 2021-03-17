@@ -1,9 +1,9 @@
 import { CloseIcon } from '../../assets/images/close-icon';
-import { HandleNameIcon } from '../../assets/images/handle-name-icon';
+import { SafleFavicon } from '../../assets/images/safle-favicon';
 import { KeyStoreIcon } from '../../assets/images/key-store-icon';
 import { MetaMaskIcon } from '../../assets/images/meta-mask-icon';
 import { PrivateKeyIcon } from '../../assets/images/private-key-icon';
-import { InbloxMe } from '../../assets/images/inblox-me';
+import { SafleLogo } from '../../assets/images/safle-logo';
 
 import { Loader } from '../loaders/loader';
 
@@ -30,10 +30,10 @@ export function ConnectToWalletModal() {
                     <input type="radio" name="connect-wallet-via" value="connect-via-handle-name-modal" id="connect-via-handle-name-modal" class="rsps-card-input-element" />
                     <div class="rsps-card-input">
                       <div class="rsps-icon">
-                        ${HandleNameIcon}
+                        ${SafleFavicon}
                       </div>
                       <div class="rsps-text">
-                        <label>Inblox Id</label>
+                        <label>Safle Id</label>
                       </div>
                     </div>
                   </label>
@@ -81,7 +81,7 @@ export function ConnectToWalletModal() {
                 </div>
               </div>
               <div class="notes">
-                <label>powered by <a href="https://inblox.me/" target="_blank">${InbloxMe}</a></label>
+                <label>powered by <a href="https://getsafle.com" target="_blank">${SafleLogo}</a></label>
               </div>
             </div>
           </div>
