@@ -161,3 +161,9 @@
 *Updated all the instances of Inblox to Safle.
 *Updated the widget logo and color schemes as per the new brand guidelines.
 
+### 1.3.1 (2021-03-17)
+
+##### Keyless package version updated.
+
+*Keyless transactions package updated to version 1.3.7.
+
