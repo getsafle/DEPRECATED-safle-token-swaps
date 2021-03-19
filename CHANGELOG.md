@@ -173,3 +173,10 @@
 
 *Keyless transactions package updated to version 1.0.0.
 
+### 1.0.2 (2021-03-17)
+
+##### Features updated
+
+*Keyless transactions package updated to version 1.0.1.
+*Footer alignment updated.
+

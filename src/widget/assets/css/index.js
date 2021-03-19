@@ -326,6 +326,8 @@ export function WidgetCSS() {
     text-decoration: none;
     font-weight: 600;
     vertical-align: middle;
+    display: inline-block;
+    margin-top: -10px;
     height: 25px;
   }
   .wallet-form .notes label a svg {
@@ -514,6 +516,7 @@ export function WidgetCSS() {
   }
   
   /* Style items (options): */
+  // eslint-disable-next-line max-lines
   .select-items {
     position: absolute;
     top: 40px;
