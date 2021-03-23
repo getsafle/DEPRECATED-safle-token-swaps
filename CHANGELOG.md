@@ -180,3 +180,10 @@
 *Keyless transactions package updated to version 1.0.1.
 *Footer alignment updated.
 
+### 1.0.3 (2021-03-17)
+
+##### Features updated
+
+*@getsafle/keyless-transactions package initialized inside widget
+*Token selector dropdown issue fixed.
+

@@ -1,6 +1,6 @@
 import events from 'events';
 
-import Keyless from '@inbloxme/keyless-transactions';
+import Keyless from '@getsafle/keyless-transactions';
 
 const TokenSwapSDK = require('..');
 
