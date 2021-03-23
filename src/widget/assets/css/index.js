@@ -516,7 +516,7 @@ export function WidgetCSS() {
   }
   
   /* Style items (options): */
-  // eslint-disable-next-line max-lines
+
   .select-items {
     position: absolute;
     top: 40px;
