@@ -187,3 +187,9 @@
 *@getsafle/keyless-transactions package initialized inside widget
 *Token selector dropdown issue fixed.
 
+### 1.0.4 (2021-03-28)
+
+##### Bugs Fixed
+
+*Fixed bug with gas calculation when source token is eth
+
