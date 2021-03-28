@@ -52,6 +52,7 @@ function getSrcQty(dstQty, srcDecimals, dstDecimals, rate) {
 class TokenSwap {
   constructor(rpcURL, etherscanSecret) {
     web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
+    this.rpcURL = rpcURL;
     this.kyberProxyContractAddress = KYBER_PROXY_CONTRACT_ADDRESS;
     this.kyberProxyContractABI = kyberProxyContractABI;
     this.etherscanSecret = etherscanSecret;

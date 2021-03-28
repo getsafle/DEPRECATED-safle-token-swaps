@@ -1,6 +1,6 @@
 {
   "name": "@getsafle/safle-token-swaps",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Safle Token Swap SDK",
   "main": "src/index.js",
   "scripts": {

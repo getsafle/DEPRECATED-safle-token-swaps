@@ -1,5 +1,3 @@
-const ethers = require('ethers');
-
 import { getDstQty } from '../../..';
 
 import { Loader } from '../loaders/loader';
@@ -8,6 +6,7 @@ import { SwapsIcon } from '../../assets/images/swaps-icon';
 import { PoweredByKyber } from '../../assets/images/powered-by-kyber';
 import { UpDownArrowIcon } from '../../assets/images/up-down-arrow-icon';
 import { WalletIcon } from '../../assets/images/wallet-icon';
+import { ETH_TOKEN_ADDRESS, KYBER_SWAP_TOKEN_IMAGE_BASE_URL } from '../../../config';
 
 import { showModalLoader, hideModalLoader } from '../../utils';
 
@@ -17,7 +16,7 @@ import {
   CANT_SWAP_SAME_TOKEN
 } from '../../../constants/responses';
 
-import { KYBER_SWAP_TOKEN_IMAGE_BASE_URL } from '../../../config';
+const Web3 = require('web3');
 
 let allTokens = [];
 let destinationQuantity;
@@ -313,6 +312,47 @@ const updateBalance = async (widgetInstance, tokenAddress = null) => {
         walletBalanceSpan.innerHTML = walletBalance;
       }
     });
+};
+
+export const checkGasPrice = async (widgetInstance) => {
+  const selectedTokens = getSelectedTokens();
+
+  let srcQty;
+  const sourceQuanity = document.getElementById('source-quantity');
+
+  if (sourceQuanity != null && sourceQuanity.value != '') {
+    srcQty = sourceQuanity.value.toString();
+  } else {
+    srcQty = '1';
+  }
+
+  const web3 = new Web3(new Web3.providers.HttpProvider(widgetInstance.tokenSwap.rpcURL));
+
+  const gasLimit = await widgetInstance.tokenSwap.getGasLimit(selectedTokens.sourceToken.address, selectedTokens.destinationToken.address, srcQty);
+
+  const gasPrice = await web3.eth.getGasPrice();
+  let gas = gasLimit * gasPrice;
+
+  gas = gas.toString();
+  const gasQtyEth = await web3.utils.fromWei(gas, 'ether');
+
+  const balance = await web3.eth.getBalance(widgetInstance.userAddress);
+
+  const errorMessage = document.getElementById('error-message');
+
+  if (widgetInstance.swapValues.srcTokenAddress === ETH_TOKEN_ADDRESS && (widgetInstance.swapValues.amount + gasQtyEth) > balance) {
+    errorMessage.innerHTML = 'Insufficient funds for gas.';
+    errorMessage.style.display = 'block';
+    document.getElementById('swap-now-button').disabled = true;
+    document.getElementById('source-quantity').value = '';
+    document.getElementById('destination-quantity').value = '';
+  } else if (widgetInstance.swapValues.srcTokenAddress !== ETH_TOKEN_ADDRESS && gasQtyEth > balance) {
+    errorMessage.innerHTML = 'Insufficient funds for gas.';
+    errorMessage.style.display = 'block';
+    document.getElementById('swap-now-button').disabled = true;
+    document.getElementById('source-quantity').value = '';
+    document.getElementById('destination-quantity').value = '';
+  }
 };
 
 const updateSourceAndDestinationImage = () => {

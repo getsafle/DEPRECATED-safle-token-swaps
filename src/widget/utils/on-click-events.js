@@ -7,7 +7,8 @@ import {
   updateSlippagePercentage,
   updateSwapConfiguration,
   toggleSourceAndDestinationTokens,
-  changeWallet
+  changeWallet,
+  checkGasPrice
 } from '../pages/swap-modals/swap-modal';
 
 import { connectWithMetaMask } from '../pages/connect-to-wallet-modal/meta-mask';
@@ -237,8 +238,10 @@ function swapModalEvents(widgetInstance) {
   const destinationTokenSelect = document.getElementById('destination-token');
   destinationTokenSelect.onchange = async () => {
     showLoader();
+    updateTokenSwapsValue(widgetInstance);
     await updateSwapConfiguration(widgetInstance);
     await getSourceQuantity(widgetInstance);
+    await checkGasPrice(widgetInstance);
     hideLoader();
   };
 
