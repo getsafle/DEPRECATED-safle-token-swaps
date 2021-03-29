@@ -193,3 +193,10 @@
 
 *Fixed bug with gas calculation when source token is eth
 
+### 1.0.5 (2021-03-29)
+
+##### Bugs Fixed
+
+*When source or destination token is changed, reset the quantities to zero.
+*Check for gas price when source quantity is changed.
+*Separate error messages for insufficient funds when source quantity is higher than wallet balance and when token balance is sufficient but balance for gas is not available.

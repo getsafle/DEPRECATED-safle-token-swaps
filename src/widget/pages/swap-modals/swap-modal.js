@@ -317,14 +317,26 @@ const updateBalance = async (widgetInstance, tokenAddress = null) => {
 export const checkGasPrice = async (widgetInstance) => {
   const selectedTokens = getSelectedTokens();
 
-  let srcQty;
-  const sourceQuanity = document.getElementById('source-quantity');
+  const errorMessage = document.getElementById('error-message');
+  const swapNowButton = document.getElementById('swap-now-button');
 
-  if (sourceQuanity != null && sourceQuanity.value != '') {
-    srcQty = sourceQuanity.value.toString();
+  if (!validSourceAndDestinationToken()) {
+    swapNowButton.disabled = true;
   } else {
-    srcQty = '1';
-  }
+    let srcQty;
+    const sourceQuanity = document.getElementById('source-quantity');
+
+    if (sourceQuanity != null && sourceQuanity.value != '') {
+      srcQty = sourceQuanity.value.toString();
+    } else {
+      srcQty = '1';
+    }
+
+    if (walletBalance < srcQty) {
+      errorMessage.innerHTML = INSUFFICIENT_FUNDS;
+      errorMessage.style.display = 'block';
+      swapNowButton.disabled = true;
+    }
 
   const web3 = new Web3(new Web3.providers.HttpProvider(widgetInstance.tokenSwap.rpcURL));
 
@@ -338,21 +350,20 @@ export const checkGasPrice = async (widgetInstance) => {
 
   const balance = await web3.eth.getBalance(widgetInstance.userAddress);
 
-  const errorMessage = document.getElementById('error-message');
+  const balanceEth = await web3.utils.fromWei(balance, 'ether');
 
-  if (widgetInstance.swapValues.srcTokenAddress === ETH_TOKEN_ADDRESS && (widgetInstance.swapValues.amount + gasQtyEth) > balance) {
+  if ((selectedTokens.sourceToken.address === ETH_TOKEN_ADDRESS) && ((parseFloat(srcQty) + parseFloat(gasQtyEth)) > parseFloat(balanceEth))) {
     errorMessage.innerHTML = 'Insufficient funds for gas.';
     errorMessage.style.display = 'block';
     document.getElementById('swap-now-button').disabled = true;
-    document.getElementById('source-quantity').value = '';
     document.getElementById('destination-quantity').value = '';
-  } else if (widgetInstance.swapValues.srcTokenAddress !== ETH_TOKEN_ADDRESS && gasQtyEth > balance) {
+  } else if ((selectedTokens.sourceToken.address !== ETH_TOKEN_ADDRESS) && (parseFloat(gasQtyEth) > parseFloat(balanceEth))) {
     errorMessage.innerHTML = 'Insufficient funds for gas.';
     errorMessage.style.display = 'block';
     document.getElementById('swap-now-button').disabled = true;
-    document.getElementById('source-quantity').value = '';
     document.getElementById('destination-quantity').value = '';
   }
+}
 };
 
 const updateSourceAndDestinationImage = () => {
