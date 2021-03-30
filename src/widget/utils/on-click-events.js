@@ -196,7 +196,7 @@ async function swapTokensBasedOnWalletSelected(widgetInstance) {
 
 function swapModalEvents(widgetInstance) {
   const swapNowButton = document.getElementById('swap-now-button');
-  swapNowButton.onclick = () => {
+  swapNowButton.onclick = async() => {
     showLoader();
 
     const swapValueResponse = updateTokenSwapsValue(widgetInstance);
@@ -211,6 +211,7 @@ function swapModalEvents(widgetInstance) {
       showLoader();
       await updateSlippagePercentage(widgetInstance);
       await getDestinationQuantity(widgetInstance);
+      await checkGasPrice(widgetInstance);
       hideLoader();
     });
   };
@@ -218,8 +219,10 @@ function swapModalEvents(widgetInstance) {
   const sourceTokenSelect = document.getElementById('source-token');
   sourceTokenSelect.onchange = async () => {
     showLoader();
+    document.getElementById('source-quantity').value = '';
     await updateSwapConfiguration(widgetInstance);
     await getDestinationQuantity(widgetInstance);
+    await checkGasPrice(widgetInstance);
     hideLoader();
   };
 
@@ -231,6 +234,7 @@ function swapModalEvents(widgetInstance) {
       showLoader();
       await updateSlippagePercentage(widgetInstance);
       await getSourceQuantity(widgetInstance);
+      await checkGasPrice(widgetInstance);
       hideLoader();
     });
   };
@@ -238,6 +242,7 @@ function swapModalEvents(widgetInstance) {
   const destinationTokenSelect = document.getElementById('destination-token');
   destinationTokenSelect.onchange = async () => {
     showLoader();
+    document.getElementById('destination-quantity').value = '';
     updateTokenSwapsValue(widgetInstance);
     await updateSwapConfiguration(widgetInstance);
     await getSourceQuantity(widgetInstance);
