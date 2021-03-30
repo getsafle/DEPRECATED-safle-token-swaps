@@ -200,3 +200,9 @@
 *When source or destination token is changed, reset the quantities to zero.
 *Check for gas price when source quantity is changed.
 *Separate error messages for insufficient funds when source quantity is higher than wallet balance and when token balance is sufficient but balance for gas is not available.
+
+### 1.0.6 (2021-03-30)
+
+##### Feature added
+
+* Gas fee required for calculation displayed on swap modal
