@@ -253,6 +253,8 @@ function swapModalEvents(widgetInstance) {
   const toggleSwap = document.getElementById('toggle-swap');
   toggleSwap.onclick = async () => {
     showLoader();
+    document.getElementById('source-quantity').value = '';
+    document.getElementById('destination-quantity').value = '';
     await toggleSourceAndDestinationTokens(widgetInstance);
     const selectCustomDesign = new CustomEvent('initCustomSelectDesign', {});
     document.dispatchEvent(selectCustomDesign);

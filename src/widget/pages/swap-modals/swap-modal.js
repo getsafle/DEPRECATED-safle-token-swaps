@@ -105,6 +105,9 @@ export async function SwapModal(widgetInstance) {
                     slippagePercentage > 1 ? 'inline' : 'none'
                   };" id="slippage-percentage">${slippagePercentage}%</label></p>
               </div>
+              <div class="gas-fees-modal">
+                Gas Fees (in ETH) : <span id="gas-fees-modal"> </label>
+              </div>
               <div class="custom-input">
                 <label id="error-message"></label>
               </div>
@@ -319,6 +322,7 @@ export const checkGasPrice = async (widgetInstance) => {
 
   const errorMessage = document.getElementById('error-message');
   const swapNowButton = document.getElementById('swap-now-button');
+  const gasFee = document.getElementById("gas-fees-modal");
 
   if (!validSourceAndDestinationToken()) {
     swapNowButton.disabled = true;
@@ -332,38 +336,39 @@ export const checkGasPrice = async (widgetInstance) => {
       srcQty = '1';
     }
 
-    if (walletBalance < srcQty) {
+    if (walletBalance < parseFloat(srcQty)) {
       errorMessage.innerHTML = INSUFFICIENT_FUNDS;
       errorMessage.style.display = 'block';
       swapNowButton.disabled = true;
+    } else {
+      const web3 = new Web3(new Web3.providers.HttpProvider(widgetInstance.tokenSwap.rpcURL));
+  
+      const gasLimit = await widgetInstance.tokenSwap.getGasLimit(selectedTokens.sourceToken.address, selectedTokens.destinationToken.address, srcQty);
+  
+      const gasPrice = await web3.eth.getGasPrice();
+      let gas = gasLimit * gasPrice;
+  
+      gas = gas.toString();
+      const gasQtyEth = await web3.utils.fromWei(gas, 'ether');
+      gasFee.innerHTML = gasQtyEth;
+  
+      const balance = await web3.eth.getBalance(widgetInstance.userAddress);
+  
+      const balanceEth = await web3.utils.fromWei(balance, 'ether');
+  
+      if ((selectedTokens.sourceToken.address === ETH_TOKEN_ADDRESS) && ((parseFloat(srcQty) + parseFloat(gasQtyEth)) > parseFloat(balanceEth))) {
+        errorMessage.innerHTML = 'Insufficient funds for gas.';
+        errorMessage.style.display = 'block';
+        document.getElementById('swap-now-button').disabled = true;
+        document.getElementById('destination-quantity').value = '';
+      } else if ((selectedTokens.sourceToken.address !== ETH_TOKEN_ADDRESS) && (parseFloat(gasQtyEth) > parseFloat(balanceEth))) {
+        errorMessage.innerHTML = 'Insufficient funds for gas.';
+        errorMessage.style.display = 'block';
+        document.getElementById('swap-now-button').disabled = true;
+        document.getElementById('destination-quantity').value = '';
+      }
     }
-
-  const web3 = new Web3(new Web3.providers.HttpProvider(widgetInstance.tokenSwap.rpcURL));
-
-  const gasLimit = await widgetInstance.tokenSwap.getGasLimit(selectedTokens.sourceToken.address, selectedTokens.destinationToken.address, srcQty);
-
-  const gasPrice = await web3.eth.getGasPrice();
-  let gas = gasLimit * gasPrice;
-
-  gas = gas.toString();
-  const gasQtyEth = await web3.utils.fromWei(gas, 'ether');
-
-  const balance = await web3.eth.getBalance(widgetInstance.userAddress);
-
-  const balanceEth = await web3.utils.fromWei(balance, 'ether');
-
-  if ((selectedTokens.sourceToken.address === ETH_TOKEN_ADDRESS) && ((parseFloat(srcQty) + parseFloat(gasQtyEth)) > parseFloat(balanceEth))) {
-    errorMessage.innerHTML = 'Insufficient funds for gas.';
-    errorMessage.style.display = 'block';
-    document.getElementById('swap-now-button').disabled = true;
-    document.getElementById('destination-quantity').value = '';
-  } else if ((selectedTokens.sourceToken.address !== ETH_TOKEN_ADDRESS) && (parseFloat(gasQtyEth) > parseFloat(balanceEth))) {
-    errorMessage.innerHTML = 'Insufficient funds for gas.';
-    errorMessage.style.display = 'block';
-    document.getElementById('swap-now-button').disabled = true;
-    document.getElementById('destination-quantity').value = '';
   }
-}
 };
 
 const updateSourceAndDestinationImage = () => {

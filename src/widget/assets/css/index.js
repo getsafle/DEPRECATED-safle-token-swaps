@@ -198,6 +198,16 @@ export function WidgetCSS() {
   .wallet-form .custom-input input.swap-input {
     text-align: right;
   }
+  .wallet-form .gas-fees-modal {
+    font-size: 11px;
+    padding-bottom: 0px;
+    display: inline-block;
+  }
+  .wallet-form .gas-fees-modal span {
+    font-size: 11px;
+    padding-bottom: 0px;
+    display: inline-block;
+  }
   .wallet-form .upload-key-store {
     padding: 25px;
     text-align: center;
