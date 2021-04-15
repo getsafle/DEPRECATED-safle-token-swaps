@@ -206,3 +206,7 @@
 ##### Feature added
 
 * Gas fee required for calculation displayed on swap modal
+
+### 1.0.7 (2021-04-15)
+
+##### Documentation Updated
