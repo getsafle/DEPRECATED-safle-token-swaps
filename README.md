@@ -1,13 +1,13 @@
-# **Inblox Token Swaps**
+# **Safle Token Swaps**
 
-Inblox Token Swap SDK
+Safle Token Swap SDK
 > Disclaimer - This is WIP, and release in beta.
 
 ## **Token Swaps**
 
-Single transaction swaps inside the inblox identity wallet, the user just selects swap pairs and the tokens get swapped. We use aggregator model powered with [Kyber.network](http://kyber.network)'s smart contracts to provide high liquidity, and minimal fees on the swaps.
+Single transaction swaps inside the safle identity wallet, the user just selects swap pairs and the tokens get swapped. We use aggregator model powered with [Kyber.network](http://kyber.network)'s smart contracts to provide high liquidity, and minimal fees on the swaps.
 
-All this is decentralised in nature, the user is always in control and ownership of their assets and the swap is initialised and the assets are received in the Inblox identity wallet itself.
+All this is decentralised in nature, the user is always in control and ownership of their assets and the swap is initialised and the assets are received in the Safle identity wallet itself.
 
 No need to hop transactions/screens to use dApps.
 
@@ -20,11 +20,11 @@ Happy #BUIDLing
 
 Install the package by running the command,
 
-`npm install @inbloxme/inblox-token-swaps`
+`npm install @getsafle/safle-token-swaps`
 
 Import the package into your project using,
 
-`const inbloxTokenSwaps = require('@inbloxme/inblox-token-swaps');`
+`const safleTokenSwaps = require('@getsafle/safle-token-swaps');`
 
 ## **Token Swap**
 
@@ -32,7 +32,7 @@ Import the package into your project using,
 
 Initialise the constructor using,
 
-`const tokenSwapWidget = new inbloxTokenSwaps.Widget({rpcURL, env, etherscanSecret});` 
+`const tokenSwapWidget = new safleTokenSwaps.Widget({rpcURL, env, etherscanSecret});` 
 
 * `env` - API environments (eg. dev, test) 
 * `etherscanSecret` - Etherscan secret key
@@ -192,7 +192,7 @@ This method can be used to get gas limit for swap transaction
 
 This method can be used to get the destination quantity.
 
-`const destQty= await inbloxTokenSwaps.getDstQty(srcQty, srcDecimals, dstDecimals, rate);`
+`const destQty= await safleTokenSwaps.getDstQty(srcQty, srcDecimals, dstDecimals, rate);`
 
 * `srcQty` - number of source tokens to be swapped
 * `srcDecimals` - decimals of source token
@@ -204,7 +204,7 @@ This method can be used to get the destination quantity.
 
 This method can be used to get the source quantity.
 
-`srcQty= await inbloxTokenSwaps.getSrcQty(dstQty, srcDecimals, dstDecimals, rate);`
+`srcQty= await safleTokenSwaps.getSrcQty(dstQty, srcDecimals, dstDecimals, rate);`
 
 * `dstQty` - number of source tokens to be swapped
 * `srcDecimals` - decimals of source token
@@ -216,7 +216,7 @@ This method can be used to get the source quantity.
 
 This method can be used to get user's wallet details.
 
-`const wallet= await inbloxTokenSwaps.getWallet({ wallet, infuraKey, keystoreJson, passphrase, privateKey});`
+`const wallet= await safleTokenSwaps.getWallet({ wallet, infuraKey, keystoreJson, passphrase, privateKey});`
 
 * `wallet` - wallet type, (valid values: keyStore, privateKey, metamask)
 * `infuraKey` - infura key (only req. if wallet type is privateKey),
@@ -232,4 +232,4 @@ Want to contribute, we would ❤️ that!
 
 We are a Global 🌏🌍🌎 team! 💪
 
-Write to [dev@inblox.me](mailto:dev@inblox.me), or follow us on twitter, [https://twitter.com/inblox_me](https://twitter.com/inblox_me)
+Write to [dev@getsafle.com](mailto:dev@getsafle.com), or follow us on twitter, [https://twitter.com/getsafle](https://twitter.com/getsafle)
