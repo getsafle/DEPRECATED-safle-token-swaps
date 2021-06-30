@@ -210,3 +210,9 @@
 ### 1.0.7 (2021-04-15)
 
 ##### Documentation Updated
+
+### 1.0.8 (2021-06-30)
+
+##### Feature Added
+
+* Add bundle file for token swaps package
