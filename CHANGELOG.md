@@ -216,3 +216,13 @@
 ##### Feature Added
 
 * Add bundle file for token swaps package
+
+### 2.0.0 
+
+##### Updates
+
+* Added method to get list of supported DEX's
+* Added method to change DEX's
+* Added method to get list of supported tokens
+* Added method to get exchange rates
+* Added method to get slippage
