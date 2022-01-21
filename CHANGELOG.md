@@ -222,4 +222,5 @@
 ##### Updates
 
 * Added method to get list of supported DEX's
+* Added method to change DEX's
 

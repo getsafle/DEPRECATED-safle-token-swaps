@@ -11,6 +11,14 @@ class Swaps {
 
         return supportedDex;
     }
+
+    async changeDex(dex) {
+        if(!supportedDex.includes(dex))
+        {
+            return { error: response.INVALID_DEX }
+        }
+        this.dex = dex;
+    }    
 }
 
 module.exports = Swaps;
