@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/getsafle/safle-token-swaps#readme",
   "dependencies": {
-    "axios": "^0.25.0"
+    "axios": "^0.25.0",
+    "web3": "^1.7.0"
   }
 }

@@ -1,3 +1,4 @@
+const Web3 = require('web3');
 const  supportedDex  = require('../dex');
 const response = require('../constants/responses');
 const config = require('../config');
@@ -5,8 +6,10 @@ const helper = require('../utils/helper')
 
 class Swaps {
 
-    constructor(dex) {
+    constructor({ dex, rpcURL }) {
         this.dex = dex;
+        this.rpcURL = rpcURL;
+        this.web3 = new Web3(new Web3.providers.HttpProvider(rpcURL));
     }
 
     async getDex() {
@@ -28,7 +31,7 @@ class Swaps {
         return response;
     }
 
-    async getExchangeRates(fromToken, toToken, quantity) {
+    async getExchangeRates({ fromToken, toToken, quantity }) {
 
         const { error, response } = await this.dex.getRates(fromToken, toToken, quantity);
 
@@ -39,15 +42,30 @@ class Swaps {
         return response;
     }
 
-    async getSlippage(fromToken, toToken, quantity) {
+    async getSlippage({ fromToken, toToken, quantity }) {
 
-        const { error, response } = await this.dex.getSlippage(fromToken, toToken, quantity);
+        const { error, response } = await this.dex.getSlippage({ fromToken, toToken, quantity });
 
         if(error){
             return { error };
         }    
 
         return response;
+    }
+
+    async getEstimatedGas({ fromToken, toToken, quantity }) {
+
+        const gasPrice = await this.web3.eth.getGasPrice();
+
+        const { error, response } = await this.dex.getGasLimit({ fromToken, toToken, quantity });
+
+        if(error){
+            return { error };
+        }    
+
+        const { gasLimit } = response;
+
+        return { gasLimit, gasPrice };
     }
 }
 
