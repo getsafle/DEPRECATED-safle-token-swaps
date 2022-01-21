@@ -216,3 +216,10 @@
 ##### Feature Added
 
 * Add bundle file for token swaps package
+
+### 2.0.0 
+
+##### Updates
+
+* Added method to get list of supported DEX's
+
