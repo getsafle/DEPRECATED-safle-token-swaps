@@ -225,3 +225,4 @@
 * Added method to change DEX's
 * Added method to get list of supported tokens
 * Added method to get exchange rates
+* Added method to get slippage

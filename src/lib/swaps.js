@@ -38,6 +38,17 @@ class Swaps {
 
         return response;
     }
+
+    async getSlippage(fromToken, toToken, quantity) {
+
+        const { error, response } = await this.dex.getSlippage(fromToken, toToken, quantity);
+
+        if(error){
+            return { error };
+        }    
+
+        return response;
+    }
 }
 
 module.exports = Swaps;
