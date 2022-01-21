@@ -27,6 +27,17 @@ class Swaps {
     
         return response;
     }
+
+    async getExchangeRates(fromToken, toToken, quantity) {
+
+        const { error, response } = await this.dex.getRates(fromToken, toToken, quantity);
+
+        if(error){
+            return { error };
+        }    
+
+        return response;
+    }
 }
 
 module.exports = Swaps;
