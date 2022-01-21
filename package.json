@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/getsafle/safle-token-swaps/issues"
   },
-  "homepage": "https://github.com/getsafle/safle-token-swaps#readme"
+  "homepage": "https://github.com/getsafle/safle-token-swaps#readme",
+  "dependencies": {
+    "axios": "^0.25.0"
+  }
 }
