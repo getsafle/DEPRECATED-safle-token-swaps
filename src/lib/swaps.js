@@ -68,9 +68,9 @@ class Swaps {
         return { gasLimit, gasPrice };
     }
 
-    async getSignedTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance, }) {
+    async getRawTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance }) {
 
-        const { error, response } = await this.dex.getSignedTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance, });
+        const { error, response } = await this.dex.getRawTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance, });
 
         if(error){
             return { error };
