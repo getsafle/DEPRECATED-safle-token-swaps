@@ -67,6 +67,19 @@ class Swaps {
 
         return { gasLimit, gasPrice };
     }
+
+    async getSignedTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance, }) {
+
+        const { error, response } = await this.dex.getSignedTx({ walletAddress, toToken, fromToken, toQuantity, fromQuantity, slippageTolerance, });
+
+        if(error){
+            return { error };
+        }    
+
+        const { SignedTx } = response;
+
+        return { SignedTx };
+    }
 }
 
 module.exports = Swaps;

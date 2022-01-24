@@ -227,3 +227,4 @@
 * Added method to get exchange rates
 * Added method to get slippage
 * Added method to get estimated gas
+* Added method to get signed transaction
